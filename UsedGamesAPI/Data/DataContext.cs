@@ -11,5 +11,7 @@ namespace UsedGamesAPI.Data
         public DbSet<Order> Order { get; set; }
         public DbSet<Game> Game { get; set; }
         public DbSet<Platform> Platform { get; set; }
+
+        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
     }
 }
