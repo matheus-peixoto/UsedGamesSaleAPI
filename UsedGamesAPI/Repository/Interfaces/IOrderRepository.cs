@@ -6,7 +6,7 @@ using UsedGamesAPI.Models;
 
 namespace UsedGamesAPI.Repository.Interfaces
 {
-    public interface IOrderRespository : ICrud<Order>
+    public interface IOrderRepository : ICrud<Order>
     {
     }
 }

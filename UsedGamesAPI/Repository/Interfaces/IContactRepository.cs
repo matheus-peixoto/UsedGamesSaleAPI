@@ -6,7 +6,7 @@ using UsedGamesAPI.Models;
 
 namespace UsedGamesAPI.Repository.Interfaces
 {
-    public interface IClientRepository: ICrud<Client>, IUserRepository<Client>
+    public interface IContactRepository : ICrud<Contact>
     {
     }
 }
