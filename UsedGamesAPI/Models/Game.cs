@@ -11,7 +11,7 @@ namespace UsedGamesAPI.Models
         public string Name { get; set; }
         public decimal Price { get; set; }
         public DateTime PosteDate { get; set; }
-        public string GameDetails { get; set; }
+        public string Details { get; set; }
 
         public int PlatformId { get; set; }
 

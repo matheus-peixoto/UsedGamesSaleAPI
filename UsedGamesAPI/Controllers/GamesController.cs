@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UsedGamesAPI.DTOs.Games;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
 
@@ -18,9 +19,10 @@ namespace UsedGamesAPI.Controllers
         private readonly IPlatformRepository _platformRepository;
         private readonly IMapper _mapper;
 
-        public GamesController(IGameRepository gameRepository, IMapper mapper)
+        public GamesController(IGameRepository gameRepository, IPlatformRepository platformRepository, IMapper mapper)
         {
             _gameRepository = gameRepository;
+            _platformRepository = platformRepository;
             _mapper = mapper;
         }
 
@@ -41,5 +43,24 @@ namespace UsedGamesAPI.Controllers
 
             return Ok(game);
         }
+
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult<Game>> Create([FromBody] CreateGameDTO gameDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            if (!await _platformRepository.Exists(gameDTO.PlatformId))
+            {
+                ModelState.AddModelError("PlatformId", "The given platform id does not correspond to an existing Platform");
+                return ValidationProblem(ModelState);
+            }
+
+            Game game = _mapper.Map<Game>(gameDTO);
+            await _gameRepository.CreateAsync(game);
+
+            return CreatedAtRoute("GetGameById", new { game.Id }, game);
+        }
+
     }
 }

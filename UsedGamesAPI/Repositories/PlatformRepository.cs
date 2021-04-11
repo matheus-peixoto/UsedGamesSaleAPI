@@ -7,11 +7,11 @@ using UsedGamesAPI.Repositories.Interfaces;
 
 namespace UsedGamesAPI.Repositories
 {
-    public class PlatformRespository : IPlatformRepository
+    public class PlatformRepository : IPlatformRepository
     {
         private readonly DataContext _dataContext;
 
-        public PlatformRespository(DataContext dataContext)
+        public PlatformRepository(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
