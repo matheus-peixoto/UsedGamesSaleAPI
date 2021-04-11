@@ -86,5 +86,17 @@ namespace UsedGamesAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            Seller seller = await _sellerRespository.FindByIdAsync(id);
+            if (seller.IsNull()) return NotFound();
+
+            await _sellerRespository.DeleteAsync(seller);
+
+            return NoContent();
+        }
     }
 }
