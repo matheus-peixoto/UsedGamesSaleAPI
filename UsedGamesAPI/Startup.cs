@@ -34,6 +34,7 @@ namespace UsedGamesAPI
             services.AddControllers().AddNewtonsoftJson();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<ISellerRespository, SellerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
