@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace UsedGamesAPI.DTOs.Sellers
 {
-    public class ContactForCreateSellerDTO
+    public class ContactForCreateClientDTO
     {
         public string PhoneNumber { get; set; }
     }

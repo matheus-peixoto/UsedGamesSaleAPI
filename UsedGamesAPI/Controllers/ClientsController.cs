@@ -58,7 +58,7 @@ namespace UsedGamesAPI.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] CreateClientDTO clientDTO)
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateClientDTO clientDTO)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
@@ -73,12 +73,12 @@ namespace UsedGamesAPI.Controllers
 
         [HttpPatch]
         [Route("{id:int}")]
-        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<CreateClientDTO> patchClientDTO)
+        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<UpdateClientDTO> patchClientDTO)
         {
             Client client = await _clientRepository.FindByIdAsync(id);
             if (client.IsNull()) return NotFound();
 
-            CreateClientDTO clientDTO = _mapper.Map<CreateClientDTO>(client);
+            UpdateClientDTO clientDTO = _mapper.Map<UpdateClientDTO>(client);
             patchClientDTO.ApplyTo(clientDTO);
 
             if (!TryValidateModel(clientDTO)) return ValidationProblem(ModelState);

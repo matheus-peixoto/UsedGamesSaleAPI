@@ -13,7 +13,8 @@ namespace UsedGamesAPI.DTOs.Profiles
         public SellerProfile()
         {
             CreateMap<CreateSellerDTO, Seller>();
-            CreateMap<ContactForCreateSellerDTO, Contact>();
+            CreateMap<UpdateSellerDTO, Client>();
+            CreateMap<Client, UpdateSellerDTO>();
         }
     }
 }

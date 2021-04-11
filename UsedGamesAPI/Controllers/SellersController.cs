@@ -53,5 +53,20 @@ namespace UsedGamesAPI.Controllers
 
             return CreatedAtRoute("GetSellersById", new { seller.Id }, seller);
         }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] CreateSellerDTO sellerDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            Seller seller = await _sellerRespository.FindByIdAsync(id);
+            if (seller.IsNull()) return NotFound();
+
+            _mapper.Map(sellerDTO, seller);
+            await _sellerRespository.UpdateAsync(seller);
+
+            return NoContent();
+        }
     }
 }
