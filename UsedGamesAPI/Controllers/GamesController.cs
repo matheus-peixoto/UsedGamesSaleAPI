@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ExthensionMethods.Object;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,16 @@ namespace UsedGamesAPI.Controllers
         {
             List<Game> games = await _gameRepository.FindAllAsync();
             return Ok(games);
+        }
+
+        [HttpGet]
+        [Route("{id:int}", Name = "GetGameById")]
+        public async Task<ActionResult<Game>> GetById([FromRoute] int id)
+        {
+            Game game = await _gameRepository.FindByIdAsync(id);
+            if (game.IsNull()) return NotFound();
+
+            return Ok(game);
         }
     }
 }

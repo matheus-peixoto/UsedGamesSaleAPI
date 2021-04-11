@@ -32,7 +32,7 @@ namespace UsedGamesAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}", Name = "GetSellersById")]
+        [Route("{id:int}", Name = "GetSellerById")]
         public async Task<ActionResult<Seller>> GetById([FromRoute] int id)
         {
             Seller seller = await _sellerRespository.FindByIdAsync(id);
@@ -50,7 +50,7 @@ namespace UsedGamesAPI.Controllers
             Seller seller = _mapper.Map<Seller>(sellerDTO);
             await _sellerRespository.CreateAsync(seller);
 
-            return CreatedAtRoute("GetSellersById", new { seller.Id }, seller);
+            return CreatedAtRoute("GetSellerById", new { seller.Id }, seller);
         }
 
         [HttpPut]
