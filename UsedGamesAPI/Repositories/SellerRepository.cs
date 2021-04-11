@@ -20,9 +20,9 @@ namespace UsedGamesAPI.Repository
 
         public async Task<Seller> FindByIdAsync(int id) => await _dataContext.Seller.FindAsync(id);
 
-        public async Task<List<Seller>> FindAllAsync() => await _dataContext.Seller.ToListAsync();
+        public async Task<List<Seller>> FindAllAsync() => await _dataContext.Seller.Include(s => s.Contact).ToListAsync();
 
-        public async Task<List<Seller>> FindAllWithOrderAsync() => await _dataContext.Seller.Include(s => s.Orders).ToListAsync();
+        public async Task<List<Seller>> FindAllWithOrderAsync() => await _dataContext.Seller.Include(s => s.Contact).Include(s => s.Orders).ToListAsync();
 
         public async Task CreateAsync(Seller obj)
         {
