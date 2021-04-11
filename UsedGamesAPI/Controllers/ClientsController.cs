@@ -53,5 +53,21 @@ namespace UsedGamesAPI.Controllers
 
             return CreatedAtRoute("GetClientById", new { client.Id }, client);
         }
+
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] CreateClientDTO clientDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            Client client = await _clientRepository.FindByIdAsync(id);
+            if (client.IsNull()) return NotFound();
+
+            _mapper.Map(clientDTO, client);
+            await _clientRepository.UpdateAsync(client);
+
+             return NoContent();
+        }
     }
 }
