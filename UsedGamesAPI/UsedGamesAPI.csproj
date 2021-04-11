@@ -12,5 +12,15 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Libraries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ExthensionMethods">
+      <HintPath>bin\Debug\netcoreapp3.1\ExthensionMethods.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 
 </Project>

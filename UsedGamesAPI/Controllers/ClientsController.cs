@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ExthensionMethods.Object;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UsedGamesAPI.Libraries.ExthensionMethods.Object;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repository.Interfaces;
 
@@ -29,13 +29,23 @@ namespace UsedGamesAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}", Name = "GetClientsById")]
+        [Route("{id:int}", Name = "GetClientById")]
         public async Task<ActionResult<Client>> GetById([FromRoute] int id)
         {
             Client client = await _clientRepository.FindByIdAsync(id);
             if (client.IsNull()) return NotFound();
 
             return Ok(client);
+        }
+
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult> Create([FromBody] Client client)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            await _clientRepository.CreateAsync(client);
+            return CreatedAtRoute("GetClientById", new { client.Id }, client);
         }
     }
 }
