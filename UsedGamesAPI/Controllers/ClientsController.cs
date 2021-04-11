@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExthensionMethods.Object;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -67,7 +68,25 @@ namespace UsedGamesAPI.Controllers
             _mapper.Map(clientDTO, client);
             await _clientRepository.UpdateAsync(client);
 
-             return NoContent();
+            return NoContent();
+        }
+
+        [HttpPatch]
+        [Route("{id:int}")]
+        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<CreateClientDTO> patchClientDTO)
+        {
+            Client client = await _clientRepository.FindByIdAsync(id);
+            if (client.IsNull()) return NotFound();
+
+            CreateClientDTO clientDTO = _mapper.Map<CreateClientDTO>(client);
+            patchClientDTO.ApplyTo(clientDTO);
+
+            if (!TryValidateModel(clientDTO)) return ValidationProblem(ModelState);
+
+            _mapper.Map(clientDTO, client);
+            await _clientRepository.UpdateAsync(client);
+
+            return NoContent();
         }
     }
 }

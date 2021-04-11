@@ -31,8 +31,9 @@ namespace UsedGamesAPI
         {
             services.AddControllers();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Environment.GetEnvironmentVariable("UsedGamesAPISQL_ConnectionString", EnvironmentVariableTarget.User)));
-            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IClientRepository, ClientRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

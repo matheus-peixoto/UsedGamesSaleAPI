@@ -13,6 +13,7 @@ namespace UsedGamesAPI.DTOs.Profiles
         public ClientProfile()
         {
             CreateMap<CreateClientDTO, Client>();
+            CreateMap<Client, CreateClientDTO>();
         }
     }
 }
