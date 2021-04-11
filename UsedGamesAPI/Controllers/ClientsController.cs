@@ -34,7 +34,7 @@ namespace UsedGamesAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}", Name = "GetClientById")]
+        [Route("{id:int}")]
         public async Task<ActionResult<Client>> GetById([FromRoute] int id)
         {
             Client client = await _clientRepository.FindByIdAsync(id);
@@ -85,6 +85,17 @@ namespace UsedGamesAPI.Controllers
 
             _mapper.Map(clientDTO, client);
             await _clientRepository.UpdateAsync(client);
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            Client client = await _clientRepository.FindByIdAsync(id);
+            if (client.IsNull()) return NotFound();
+
+            await _clientRepository.DeleteAsync(client);
 
             return NoContent();
         }
