@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UsedGamesAPI.DTOs.Sellers;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repository.Interfaces;
 
@@ -32,7 +33,7 @@ namespace UsedGamesAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}")]
+        [Route("{id:int}", Name = "GetSellersById")]
         public async Task<ActionResult<Seller>> GetById([FromRoute] int id)
         {
             Seller seller = await _sellerRespository.FindByIdAsync(id);
@@ -41,6 +42,16 @@ namespace UsedGamesAPI.Controllers
             return Ok(seller);
         }
 
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult> Create([FromBody] CreateSellerDTO sellerDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
+            Seller seller = _mapper.Map<Seller>(sellerDTO);
+            await _sellerRespository.CreateAsync(seller);
+
+            return CreatedAtRoute("GetSellersById", new { seller.Id }, seller);
+        }
     }
 }

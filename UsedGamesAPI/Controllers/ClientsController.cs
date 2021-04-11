@@ -34,7 +34,7 @@ namespace UsedGamesAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}")]
+        [Route("{id:int}", Name = "GetClientsById")]
         public async Task<ActionResult<Client>> GetById([FromRoute] int id)
         {
             Client client = await _clientRepository.FindByIdAsync(id);
@@ -52,7 +52,7 @@ namespace UsedGamesAPI.Controllers
 
             await _clientRepository.CreateAsync(client);
 
-            return CreatedAtRoute("GetClientById", new { client.Id }, client);
+            return CreatedAtRoute("GetClientsById", new { client.Id }, client);
         }
 
 
