@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExthensionMethods.Object;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -56,12 +57,29 @@ namespace UsedGamesAPI.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] CreateSellerDTO sellerDTO)
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateSellerDTO sellerDTO)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
             Seller seller = await _sellerRespository.FindByIdAsync(id);
             if (seller.IsNull()) return NotFound();
+
+            _mapper.Map(sellerDTO, seller);
+            await _sellerRespository.UpdateAsync(seller);
+
+            return NoContent();
+        }
+
+        [HttpPatch]
+        [Route("{id:int}")]
+        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<UpdateSellerDTO> pacthSellerDTO)
+        {
+            Seller seller = await _sellerRespository.FindByIdAsync(id);
+            if (seller.IsNull()) return NotFound();
+
+            UpdateSellerDTO sellerDTO = _mapper.Map<UpdateSellerDTO>(seller);
+            pacthSellerDTO.ApplyTo(sellerDTO);
+            if (!TryValidateModel(sellerDTO)) return ValidationProblem(ModelState);
 
             _mapper.Map(sellerDTO, seller);
             await _sellerRespository.UpdateAsync(seller);

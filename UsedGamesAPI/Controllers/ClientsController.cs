@@ -55,7 +55,6 @@ namespace UsedGamesAPI.Controllers
             return CreatedAtRoute("GetClientsById", new { client.Id }, client);
         }
 
-
         [HttpPut]
         [Route("{id:int}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateClientDTO clientDTO)
