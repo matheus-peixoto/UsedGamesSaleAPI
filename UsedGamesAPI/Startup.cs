@@ -29,6 +29,7 @@ namespace UsedGamesAPI
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ISellerRespository, SellerRepository>();
+            services.AddScoped<IGameRepository, GameRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
