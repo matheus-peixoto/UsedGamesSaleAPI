@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
 
 namespace UsedGamesAPI.Controllers
@@ -19,6 +20,14 @@ namespace UsedGamesAPI.Controllers
         {
             _gameRepository = gameRepository;
             _mapper = mapper;
+        }
+
+        [HttpGet]
+        [Route("")]
+        public async Task<ActionResult<List<Game>>> Get()
+        {
+            List<Game> games = await _gameRepository.FindAllAsync();
+            return Ok(games);
         }
     }
 }
