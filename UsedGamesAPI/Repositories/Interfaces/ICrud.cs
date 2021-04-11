@@ -10,5 +10,6 @@ namespace UsedGamesAPI.Repositories.Interfaces
         public Task CreateAsync(T obj);
         public Task UpdateAsync(T obj);
         public Task DeleteAsync(T obj);
+        public Task<bool> Exists(int id);
     }
 }

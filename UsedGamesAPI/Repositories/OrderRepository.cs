@@ -37,5 +37,7 @@ namespace UsedGamesAPI.Repositories
             _dataContext.Order.Update(obj);
             await _dataContext.SaveChangesAsync();
         }
+
+        public async Task<bool> Exists(int id) => await _dataContext.Order.FindAsync(id) != null;
     }
 }

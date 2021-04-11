@@ -15,6 +15,7 @@ namespace UsedGamesAPI.Controllers
     public class GamesController : ControllerBase
     {
         private readonly IGameRepository _gameRepository;
+        private readonly IPlatformRepository _platformRepository;
         private readonly IMapper _mapper;
 
         public GamesController(IGameRepository gameRepository, IMapper mapper)

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UsedGamesAPI.Models
 {
@@ -10,9 +8,9 @@ namespace UsedGamesAPI.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Platform Platform { get; set; }
         public decimal Price { get; set; }
         public DateTime PosteDate { get; set; }
         public string GameDetails { get; set; }
+        public Platform Platform { get; set; }
     }
 }

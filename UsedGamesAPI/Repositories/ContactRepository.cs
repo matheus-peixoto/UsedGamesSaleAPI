@@ -37,5 +37,7 @@ namespace UsedGamesAPI.Repositories
             _dataContext.Contact.Update(obj);
             await _dataContext.SaveChangesAsync();
         }
+
+        public async Task<bool> Exists(int id) => await _dataContext.Contact.FindAsync(id) != null;
     }
 }
