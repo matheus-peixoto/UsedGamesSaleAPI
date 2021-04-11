@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using UsedGamesAPI.Models;
+﻿using UsedGamesAPI.Models;
 
-namespace UsedGamesAPI.Repository.Interfaces
+namespace UsedGamesAPI.Repositories.Interfaces
 {
     public interface IPlatformRepository : ICrud<Platform>
     {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace UsedGamesAPI.Repository.Interfaces
+namespace UsedGamesAPI.Repositories.Interfaces
 {
     public interface ICrud<T>
     {

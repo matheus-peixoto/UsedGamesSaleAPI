@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UsedGamesAPI.Data;
 using UsedGamesAPI.Models;
-using UsedGamesAPI.Repository.Interfaces;
+using UsedGamesAPI.Repositories.Interfaces;
 
-namespace UsedGamesAPI.Repository
+namespace UsedGamesAPI.Repositories
 {
     public class ClientRepository : IClientRepository
     {

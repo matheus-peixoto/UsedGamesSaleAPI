@@ -1,12 +1,11 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UsedGamesAPI.Data;
 using UsedGamesAPI.Models;
-using UsedGamesAPI.Repository.Interfaces;
+using UsedGamesAPI.Repositories.Interfaces;
 
-namespace UsedGamesAPI.Repository
+namespace UsedGamesAPI.Repositories
 {
     public class PlatformRespository : IPlatformRepository
     {
