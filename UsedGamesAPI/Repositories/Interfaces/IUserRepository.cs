@@ -5,7 +5,7 @@ namespace UsedGamesAPI.Repositories.Interfaces
 {
     public interface IUserRepository<T>
     {
-        public Task<T> FindByIdWithOrderAsync(int id);
-        public Task<List<T>> FindAllWithOrderAsync();
+        public Task<T> FindByIdWithOrdersAsync(int id);
+        public Task<List<T>> FindAllWithOrdersAsync();
     }
 }

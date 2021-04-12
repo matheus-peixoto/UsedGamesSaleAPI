@@ -29,10 +29,9 @@ namespace UsedGamesAPI.Controllers
         [Route("")]
         public async Task<ActionResult<List<Platform>>> Get()
         {
-            List<Platform> platforms = await _platformRepository.FindAllAsync();
+            List<Platform> platforms = await _platformRepository.FindAllWithGamesAsync();
             return Ok(platforms);
         }
-
 
         [HttpGet]
         [Route("{id:int}", Name = "GetPlatformById")]

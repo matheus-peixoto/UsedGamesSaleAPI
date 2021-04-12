@@ -20,6 +20,8 @@ namespace UsedGamesAPI.Repositories
 
         public async Task<List<Platform>> FindAllAsync() => await _dataContext.Platform.ToListAsync();
 
+        public async Task<List<Platform>> FindAllWithGamesAsync() => await _dataContext.Platform.Include(p => p.Games).ToListAsync();
+
         public async Task CreateAsync(Platform obj)
         {
             _dataContext.Platform.Add(obj);
