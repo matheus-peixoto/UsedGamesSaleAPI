@@ -62,5 +62,25 @@ namespace UsedGamesAPI.Controllers
             return CreatedAtRoute("GetGameById", new { game.Id }, game);
         }
 
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateGameDTO gameDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            Game game = await _gameRepository.FindByIdAsync(id);
+            if (game.IsNull()) return NotFound();
+
+            if (!await _platformRepository.Exists(gameDTO.PlatformId))
+            {
+                ModelState.AddModelError("PlatformId", "The given platform id does not correspond to an existing Platform");
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(gameDTO, game);
+            await _gameRepository.UpdateAsync(game);
+
+            return NoContent();
+        }
     }
 }
