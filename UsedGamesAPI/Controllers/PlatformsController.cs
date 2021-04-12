@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
 
 namespace UsedGamesAPI.Controllers
@@ -20,5 +21,14 @@ namespace UsedGamesAPI.Controllers
             _platformRepository = platformRepository;
             _mapper = mapper;
         }
+
+        [HttpGet]
+        [Route("")]
+        public async Task<ActionResult<List<Platform>>> Get()
+        {
+            List<Platform> platforms = await _platformRepository.FindAllAsync();
+            return Ok(platforms);
+        }
+
     }
 }
