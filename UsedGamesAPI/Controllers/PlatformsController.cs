@@ -45,7 +45,7 @@ namespace UsedGamesAPI.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult> Create([FromBody] CreatePlatformDTO platformDTO)
+        public async Task<ActionResult> Create([FromBody] CreateUpdatePlatformDTO platformDTO)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
@@ -53,6 +53,21 @@ namespace UsedGamesAPI.Controllers
             await _platformRepository.CreateAsync(platform);
 
             return CreatedAtRoute("GetPlatformById", new { platform.Id }, platform);
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] CreateUpdatePlatformDTO platformDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            Platform platform = await _platformRepository.FindByIdAsync(id);
+            if (platform.IsNull()) return NotFound();
+
+             _mapper.Map(platformDTO, platform);
+            await _platformRepository.UpdateAsync(platform);
+
+            return NoContent();
         }
     }
 }

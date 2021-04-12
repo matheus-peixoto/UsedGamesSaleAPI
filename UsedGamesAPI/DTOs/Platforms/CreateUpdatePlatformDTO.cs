@@ -1,6 +1,6 @@
 ﻿namespace UsedGamesAPI.DTOs.Platforms
 {
-    public class CreatePlatformDTO
+    public class CreateUpdatePlatformDTO
     {
         public string Name { get; set; }
     }
