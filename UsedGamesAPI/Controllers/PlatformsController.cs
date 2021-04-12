@@ -88,6 +88,16 @@ namespace UsedGamesAPI.Controllers
             return NoContent();
         }
 
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            Platform platform = await _platformRepository.FindByIdAsync(id);
+            if (platform.IsNull()) return NotFound();
 
+            await _platformRepository.DeleteAsync(platform);
+
+            return NoContent();
+        }
     }
 }
