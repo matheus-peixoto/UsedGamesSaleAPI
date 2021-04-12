@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UsedGamesAPI.DTOs.Platforms;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
 
@@ -40,6 +41,18 @@ namespace UsedGamesAPI.Controllers
             if (platform.IsNull()) return NotFound();
 
             return Ok(platform);
+        }
+
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult> Create([FromBody] CreatePlatformDTO platformDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            Platform platform = _mapper.Map<Platform>(platformDTO);
+            await _platformRepository.CreateAsync(platform);
+
+            return CreatedAtRoute("GetPlatformById", new { platform.Id }, platform);
         }
     }
 }
