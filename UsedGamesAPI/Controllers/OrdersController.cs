@@ -30,5 +30,15 @@ namespace UsedGamesAPI.Controllers
             List<Order> orders = await _orderRepository.FindAllAsync();
             return Ok(orders);
         }
+
+        [HttpGet]
+        [Route("{id:int}", Name = "GetOrderById")]
+        public async Task<ActionResult<Platform>> GetById([FromRoute] int id)
+        {
+            Order order = await _orderRepository.FindByIdAsync(id);
+            if (order.IsNull()) return NotFound();
+
+            return Ok(order);
+        }
     }
 }
