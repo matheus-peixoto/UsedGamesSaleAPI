@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ExthensionMethods.Object;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -30,5 +31,15 @@ namespace UsedGamesAPI.Controllers
             return Ok(platforms);
         }
 
+
+        [HttpGet]
+        [Route("{id:int}", Name = "GetPlatformById")]
+        public async Task<ActionResult<Platform>> GetById([FromRoute] int id)
+        {
+            Platform platform = await _platformRepository.FindByIdAsync(id);
+            if (platform.IsNull()) return NotFound();
+
+            return Ok(platform);
+        }
     }
 }
