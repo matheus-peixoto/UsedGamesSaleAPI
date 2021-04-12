@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExthensionMethods.Object;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,32 @@ namespace UsedGamesAPI.Controllers
 
             if (!await _platformRepository.Exists(gameDTO.PlatformId))
             {
-                ModelState.AddModelError("PlatformId", "The given platform id does not correspond to an existing Platform");
+                ModelState.AddModelError("PlatformId", "The given platform's id does not corresponds to an existing platform");
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(gameDTO, game);
+            await _gameRepository.UpdateAsync(game);
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<UpdateGameDTO> patchGameDTO)
+        {
+            Game game = await _gameRepository.FindByIdAsync(id);
+            if (game.IsNull()) return NotFound();
+
+            UpdateGameDTO gameDTO = _mapper.Map<UpdateGameDTO>(game);
+            if (!TryValidateModel(gameDTO)) return ValidationProblem(ModelState);
+
+            patchGameDTO.ApplyTo(gameDTO);
+
+            //If any operation will peform a change in the game's platform id and that new id it's not valid, return a validation problem
+            if (patchGameDTO.Operations.Any(op => op.path == "platformid") && !await _platformRepository.Exists(gameDTO.PlatformId))
+            {
+                ModelState.AddModelError("PlatformId", "The given platform's id does not corresponds to an existing platform");
                 return ValidationProblem(ModelState);
             }
 
