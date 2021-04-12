@@ -9,6 +9,7 @@ namespace UsedGamesAPI.DTOs.AutoMapperConfig.Profiles
         public PlatformProfile()
         {
             CreateMap<CreateUpdatePlatformDTO, Platform>();
+            CreateMap<Platform, CreateUpdatePlatformDTO>();
         }
     }
 }

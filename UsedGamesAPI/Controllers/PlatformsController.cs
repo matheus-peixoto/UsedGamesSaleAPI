@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExthensionMethods.Object;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -69,5 +70,24 @@ namespace UsedGamesAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpPatch]
+        [Route("{id:int}")]
+        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<CreateUpdatePlatformDTO> patchPlatformDTO)
+        {
+            Platform platform = await _platformRepository.FindByIdAsync(id);
+            if (platform.IsNull()) return NotFound();
+
+            CreateUpdatePlatformDTO platformDTO = _mapper.Map<CreateUpdatePlatformDTO>(platform);
+            patchPlatformDTO.ApplyTo(platformDTO);
+            if (!TryValidateModel(platformDTO)) return ValidationProblem();
+
+            _mapper.Map(platformDTO, platform);
+            await _platformRepository.UpdateAsync(platform);
+
+            return NoContent();
+        }
+
+
     }
 }
