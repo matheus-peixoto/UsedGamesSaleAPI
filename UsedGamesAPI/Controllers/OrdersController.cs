@@ -22,5 +22,13 @@ namespace UsedGamesAPI.Controllers
             _orderRepository = platformRepository;
             _mapper = mapper;
         }
+
+        [HttpGet]
+        [Route("")]
+        public async Task<ActionResult<List<Platform>>> Get()
+        {
+            List<Order> orders = await _orderRepository.FindAllAsync();
+            return Ok(orders);
+        }
     }
 }
