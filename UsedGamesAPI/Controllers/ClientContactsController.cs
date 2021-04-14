@@ -28,5 +28,15 @@ namespace UsedGamesAPI.Controllers
             List<ClientContact> clientContacts = await _clientContactRepository.FindAllAsync();
             return Ok(clientContacts);
         }
+
+        [HttpGet]
+        [Route("{id:int}", Name = "GetClientContactById")]
+        public async Task<ActionResult<ClientContact>> GetById([FromRoute] int id)
+        {
+            ClientContact clientContact = await _clientContactRepository.FindByIdAsync(id);
+            if (clientContact.IsNull()) return NotFound();
+
+            return Ok(clientContact);
+        }
     }
 }
