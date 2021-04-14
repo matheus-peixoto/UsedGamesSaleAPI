@@ -92,6 +92,18 @@ namespace UsedGamesAPI.Controllers
             return NoContent();
         }
 
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            Order order = await _orderRepository.FindByIdAsync(id);
+            if (order.IsNull()) return NotFound();
+
+            await _orderRepository.DeleteAsync(order);
+
+            return NoContent();
+        }
+
         [NonAction]
         private async Task ValidateOrderModelForeignKeys(int clientId, int gameId)
         {
