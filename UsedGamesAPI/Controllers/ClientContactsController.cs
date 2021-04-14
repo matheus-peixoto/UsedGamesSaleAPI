@@ -44,15 +44,30 @@ namespace UsedGamesAPI.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult> Create([FromBody] CreateClientContactDTO sellerContactDTO)
+        public async Task<ActionResult> Create([FromBody] CreateClientContactDTO clientContactDTO)
         {
-            await ValidateSellerContactModelForeignKeys(sellerContactDTO.ClientId);
+            await ValidateSellerContactModelForeignKeys(clientContactDTO.ClientId);
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            ClientContact clientContact = _mapper.Map<ClientContact>(sellerContactDTO);
+            ClientContact clientContact = _mapper.Map<ClientContact>(clientContactDTO);
             await _clientContactRepository.CreateAsync(clientContact);
 
             return CreatedAtRoute("GetClientContactById", new { clientContact.Id }, clientContact);
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateClientContactDTO clientContactDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            ClientContact clientContact = await _clientContactRepository.FindByIdAsync(id);
+            if (clientContact.IsNull()) return NotFound();
+
+            _mapper.Map(clientContactDTO, clientContact);
+            await _clientContactRepository.UpdateAsync(clientContact);
+
+            return NoContent();
         }
 
         [NonAction]

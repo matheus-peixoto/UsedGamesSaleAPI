@@ -13,6 +13,8 @@ namespace UsedGamesAPI.DTOs.AutoMapperConfig.Profiles
         public ClientContactProfile()
         {
             CreateMap<CreateClientContactDTO, ClientContact>();
+            CreateMap<UpdateClientContactDTO, ClientContact>();
+            CreateMap<ClientContact, UpdateClientContactDTO>();
         }
     }
 }
