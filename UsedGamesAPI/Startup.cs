@@ -28,7 +28,7 @@ namespace UsedGamesAPI
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IClientRepository, ClientRepository>();
-            services.AddScoped<ISellerRespository, SellerRepository>();
+            services.AddScoped<ISellerRepository, SellerRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IPlatformRepository, PlatformRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();

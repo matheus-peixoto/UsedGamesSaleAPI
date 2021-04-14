@@ -7,7 +7,7 @@ using UsedGamesAPI.Repositories.Interfaces;
 
 namespace UsedGamesAPI.Repositories
 {
-    public class SellerRepository : ISellerRespository
+    public class SellerRepository : ISellerRepository
     {
         private readonly DataContext _dataContext;
 

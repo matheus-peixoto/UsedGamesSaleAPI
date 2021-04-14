@@ -17,10 +17,10 @@ namespace UsedGamesAPI.Controllers
     {
         private readonly IGameRepository _gameRepository;
         private readonly IPlatformRepository _platformRepository;
-        private readonly ISellerRespository _sellerRespository;
+        private readonly ISellerRepository _sellerRespository;
         private readonly IMapper _mapper;
 
-        public GamesController(IGameRepository gameRepository, IPlatformRepository platformRepository, ISellerRespository sellerRespository, IMapper mapper)
+        public GamesController(IGameRepository gameRepository, IPlatformRepository platformRepository, ISellerRepository sellerRespository, IMapper mapper)
         {
             _gameRepository = gameRepository;
             _platformRepository = platformRepository;

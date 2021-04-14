@@ -2,12 +2,10 @@
 using ExthensionMethods.Object;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.SellerContacts;
 using UsedGamesAPI.Models;
-using UsedGamesAPI.Repositories;
 using UsedGamesAPI.Repositories.Interfaces;
 
 namespace UsedGamesAPI.Controllers
@@ -17,10 +15,10 @@ namespace UsedGamesAPI.Controllers
     public class SellerContactsController : ControllerBase
     {
         private readonly ISellerContactRepository _sellerContactRepository;
-        private readonly ISellerRespository _sellerRespository;
+        private readonly ISellerRepository _sellerRespository;
         private readonly IMapper _mapper;
 
-        public SellerContactsController(ISellerContactRepository sellerContactRepository, ISellerRespository sellerRespository, IMapper mapper)
+        public SellerContactsController(ISellerContactRepository sellerContactRepository, ISellerRepository sellerRespository, IMapper mapper)
         {
             _sellerContactRepository = sellerContactRepository;
             _sellerRespository = sellerRespository;
@@ -53,7 +51,7 @@ namespace UsedGamesAPI.Controllers
             SellerContact sellerContact = _mapper.Map<SellerContact>(sellerContactDTO);
             await _sellerContactRepository.CreateAsync(sellerContact);
 
-            return Ok();
+            return CreatedAtRoute("GetSellerContactById", new { sellerContact.Id}, sellerContact);
         }
 
         [HttpPut]
@@ -84,6 +82,18 @@ namespace UsedGamesAPI.Controllers
 
             _mapper.Map(sellerDTO, sellerContact);
             await _sellerContactRepository.UpdateAsync(sellerContact);
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            SellerContact sellerContact = await _sellerContactRepository.FindByIdAsync(id);
+            if (sellerContact.IsNull()) return NotFound();
+
+            await _sellerContactRepository.DeleteAsync(sellerContact);
 
             return NoContent();
         }

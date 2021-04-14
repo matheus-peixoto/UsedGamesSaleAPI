@@ -14,10 +14,10 @@ namespace UsedGamesAPI.Controllers
     [Route("sellers")]
     public class SellersController : ControllerBase
     {
-        private readonly ISellerRespository _sellerRespository;
+        private readonly ISellerRepository _sellerRespository;
         private readonly IMapper _mapper;
 
-        public SellersController(ISellerRespository sellerRespository, IMapper mapper)
+        public SellersController(ISellerRepository sellerRespository, IMapper mapper)
         {
             _sellerRespository = sellerRespository;
             _mapper = mapper;
