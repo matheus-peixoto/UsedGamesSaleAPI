@@ -32,6 +32,7 @@ namespace UsedGamesAPI
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IPlatformRepository, PlatformRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ISellerContactRepository, SellerContactRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

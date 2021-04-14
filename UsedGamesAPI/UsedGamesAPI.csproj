@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20210414181429_AddQuantityFieldInGame.cs" />
     <Compile Remove="Migrations\20210414181429_AddQuantityFieldInGame.Designer.cs" />
+    <Compile Remove="Migrations\20210414201452_AddingAssociationsWithContacts.cs" />
+    <Compile Remove="Migrations\20210414201452_AddingAssociationsWithContacts.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
