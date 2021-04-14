@@ -16,14 +16,9 @@ namespace UsedGamesAPI.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task<Seller> FindByIdAsync(int id) => await _dataContext.Seller.Include(s => s.Contact).FirstOrDefaultAsync(s => s.Id == id);
+        public async Task<Seller> FindByIdAsync(int id) => await _dataContext.Seller.FirstOrDefaultAsync(s => s.Id == id);
 
-        public async Task<Seller> FindByIdWithOrdersAsync(int id) 
-            => await _dataContext.Seller.Include(s => s.Contact).Include(s => s.Orders).FirstOrDefaultAsync(s => s.Id == id);
-
-        public async Task<List<Seller>> FindAllAsync() => await _dataContext.Seller.Include(s => s.Contact).ToListAsync();
-
-        public async Task<List<Seller>> FindAllWithOrdersAsync() => await _dataContext.Seller.Include(s => s.Contact).Include(s => s.Orders).ToListAsync();
+        public async Task<List<Seller>> FindAllAsync() => await _dataContext.Seller.ToListAsync();
 
         public async Task CreateAsync(Seller obj)
         {
@@ -43,6 +38,6 @@ namespace UsedGamesAPI.Repositories
             await _dataContext.SaveChangesAsync();
         }
 
-        public async Task<bool> Exists(int id) => await _dataContext.Seller.FindAsync(id) != null;
+        public async Task<bool> ExistsAsync(int id) => await _dataContext.Seller.FindAsync(id) != null;
     }
 }

@@ -11,10 +11,10 @@ namespace UsedGamesAPI.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public List<Order> Orders { get; set; }
+        public List<Game> Games { get; set; }
 
-        public int ContactId { get; set; }
-        [ForeignKey("ContactId")]
-        public Contact Contact { get; set; }
+        public int SellerContactId { get; set; }
+        [ForeignKey("SellerContactId")]
+        public SellerContact SellerContact { get; set; }
     }
 }

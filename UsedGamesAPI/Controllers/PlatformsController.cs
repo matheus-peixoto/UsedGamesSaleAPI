@@ -37,7 +37,7 @@ namespace UsedGamesAPI.Controllers
         [Route("{id:int}", Name = "GetPlatformById")]
         public async Task<ActionResult<Platform>> GetById([FromRoute] int id)
         {
-            Platform platform = await _platformRepository.FindByIdAsync(id);
+            Platform platform = await _platformRepository.FindByIdWithGamesAsync(id);
             if (platform.IsNull()) return NotFound();
 
             return Ok(platform);

@@ -18,12 +18,14 @@ namespace UsedGamesAPI.Controllers
     {
         private readonly IGameRepository _gameRepository;
         private readonly IPlatformRepository _platformRepository;
+        private readonly ISellerRespository _sellerRespository;
         private readonly IMapper _mapper;
 
-        public GamesController(IGameRepository gameRepository, IPlatformRepository platformRepository, IMapper mapper)
+        public GamesController(IGameRepository gameRepository, IPlatformRepository platformRepository, ISellerRespository sellerRespository, IMapper mapper)
         {
             _gameRepository = gameRepository;
             _platformRepository = platformRepository;
+            _sellerRespository = sellerRespository;
             _mapper = mapper;
         }
 
@@ -51,9 +53,15 @@ namespace UsedGamesAPI.Controllers
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            if (!await _platformRepository.Exists(gameDTO.PlatformId))
+            if (!await _platformRepository.ExistsAsync(gameDTO.PlatformId))
             {
                 ModelState.AddModelError("PlatformId", "The given platform id does not correspond to an existing Platform");
+                return ValidationProblem(ModelState);
+            }
+
+            if (!await _sellerRespository.ExistsAsync(gameDTO.PlatformId))
+            {
+                ModelState.AddModelError("SellerId", "The given seller id does not correspond to an existing seller");
                 return ValidationProblem(ModelState);
             }
 
@@ -72,9 +80,15 @@ namespace UsedGamesAPI.Controllers
             Game game = await _gameRepository.FindByIdAsync(id);
             if (game.IsNull()) return NotFound();
 
-            if (!await _platformRepository.Exists(gameDTO.PlatformId))
+            if (!await _platformRepository.ExistsAsync(gameDTO.PlatformId))
             {
                 ModelState.AddModelError("PlatformId", "The given platform's id does not corresponds to an existing platform");
+                return ValidationProblem(ModelState);
+            }
+
+            if (!await _sellerRespository.ExistsAsync(gameDTO.PlatformId))
+            {
+                ModelState.AddModelError("SellerId", "The given seller id does not correspond to an existing seller");
                 return ValidationProblem(ModelState);
             }
 
@@ -84,7 +98,7 @@ namespace UsedGamesAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Route("{id:int}")]
         public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<UpdateGameDTO> patchGameDTO)
         {
@@ -97,9 +111,16 @@ namespace UsedGamesAPI.Controllers
             patchGameDTO.ApplyTo(gameDTO);
 
             //If any operation will peform a change in the game's platform id and that new id it's not valid, return a validation problem
-            if (patchGameDTO.Operations.Any(op => op.path == "platformid") && !await _platformRepository.Exists(gameDTO.PlatformId))
+            if (patchGameDTO.Operations.Any(op => op.path.ToLower() == "platformid") && !await _platformRepository.ExistsAsync(gameDTO.PlatformId))
             {
                 ModelState.AddModelError("PlatformId", "The given platform's id does not corresponds to an existing platform");
+                return ValidationProblem(ModelState);
+            }
+
+            //If any operation will peform a change in the game's seller id and that new id it's not valid, return a validation problem
+            if (patchGameDTO.Operations.Any(op => op.path.ToLower() == "sellerid") && !await _sellerRespository.ExistsAsync(gameDTO.PlatformId))
+            {
+                ModelState.AddModelError("SellerId", "The given seller id does not correspond to an existing seller");
                 return ValidationProblem(ModelState);
             }
 

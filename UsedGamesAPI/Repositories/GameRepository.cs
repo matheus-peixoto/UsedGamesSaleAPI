@@ -38,6 +38,6 @@ namespace UsedGamesAPI.Repositories
             await _dataContext.SaveChangesAsync();
         }
 
-        public async Task<bool> Exists(int id) => await _dataContext.Game.FindAsync(id) != null;
+        public async Task<bool> ExistsAsync(int id) => await _dataContext.Game.FindAsync(id) != null;
     }
 }

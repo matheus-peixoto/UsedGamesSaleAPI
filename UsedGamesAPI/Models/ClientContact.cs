@@ -2,10 +2,11 @@
 
 namespace UsedGamesAPI.Models
 {
-    public class Contact
+    public class ClientContact
     {
         [Key]
         public int Id { get; set; }
+
         public string PhoneNumber { get; set; }
     }
 }

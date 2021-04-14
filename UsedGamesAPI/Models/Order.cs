@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using UsedGamesAPI.Models.Enums;
 
@@ -10,11 +9,11 @@ namespace UsedGamesAPI.Models
         [Key]
         public int Id { get; set; }
         public OrderStatus Status { get; set; }
-        public List<Game> Games { get; set; }
+        public int StockQuantity { get; set; }
 
-        public int SellerId { get; set; }
-        [ForeignKey("SellerId")]
-        public Seller Seller { get; set; }
+        public int GameId { get; set; }
+        [ForeignKey("GameId")]
+        public Game Game { get; set; }
 
         public int ClientId { get; set; }
         [ForeignKey("ClientId")]

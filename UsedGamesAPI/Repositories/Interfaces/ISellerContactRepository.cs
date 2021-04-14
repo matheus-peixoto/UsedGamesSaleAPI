@@ -2,7 +2,7 @@
 
 namespace UsedGamesAPI.Repositories.Interfaces
 {
-    public interface IContactRepository : ICrud<Contact>
+    public interface ISellerContactRepository : ICrud<SellerContact>
     {
     }
 }

@@ -13,8 +13,8 @@ namespace UsedGamesAPI.Models
         public string Password { get; set; }
         public List<Order> Orders { get; set; }
 
-        public int ContactId { get; set; }
-        [ForeignKey("ContactId")]
-        public Contact Contact { get; set; }
+        public int ClientContactId { get; set; }
+        [ForeignKey("ClientContactId")]
+        public ClientContact ClientContact { get; set; }
     }
 }

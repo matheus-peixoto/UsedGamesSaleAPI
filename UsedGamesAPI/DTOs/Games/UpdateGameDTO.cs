@@ -6,5 +6,6 @@
         public decimal Price { get; set; }
         public string Details { get; set; }
         public int PlatformId { get; set; }
+        public int SellerId { get; set; }
     }
 }

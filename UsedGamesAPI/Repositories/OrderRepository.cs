@@ -16,9 +16,9 @@ namespace UsedGamesAPI.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task<Order> FindByIdAsync(int id) => await _dataContext.Order.Include(o => o.Client).Include(o => o.Seller).FirstOrDefaultAsync(o => o.Id == id);
+        public async Task<Order> FindByIdAsync(int id) => await _dataContext.Order.Include(o => o.Client).FirstOrDefaultAsync(o => o.Id == id);
 
-        public async Task<List<Order>> FindAllAsync() => await _dataContext.Order.Include(o => o.Client).Include(o => o.Seller).ToListAsync();
+        public async Task<List<Order>> FindAllAsync() => await _dataContext.Order.Include(o => o.Client).ToListAsync();
 
         public async Task CreateAsync(Order obj)
         {
@@ -38,6 +38,6 @@ namespace UsedGamesAPI.Repositories
             await _dataContext.SaveChangesAsync();
         }
 
-        public async Task<bool> Exists(int id) => await _dataContext.Order.FindAsync(id) != null;
+        public async Task<bool> ExistsAsync(int id) => await _dataContext.Order.FindAsync(id) != null;
     }
 }

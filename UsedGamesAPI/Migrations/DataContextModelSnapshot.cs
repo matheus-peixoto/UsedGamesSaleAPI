@@ -26,7 +26,7 @@ namespace UsedGamesAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ContactId")
+                    b.Property<int>("ClientContactId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -40,12 +40,12 @@ namespace UsedGamesAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContactId");
+                    b.HasIndex("ClientContactId");
 
                     b.ToTable("Client");
                 });
 
-            modelBuilder.Entity("UsedGamesAPI.Models.Contact", b =>
+            modelBuilder.Entity("UsedGamesAPI.Models.ClientContact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace UsedGamesAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contact");
+                    b.ToTable("ClientContact");
                 });
 
             modelBuilder.Entity("UsedGamesAPI.Models.Game", b =>
@@ -67,29 +67,29 @@ namespace UsedGamesAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("GameDetails")
+                    b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("PlatformId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PlatformId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PosteDate")
+                    b.Property<DateTime>("PostDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
-
                     b.HasIndex("PlatformId");
+
+                    b.HasIndex("SellerId");
 
                     b.ToTable("Game");
                 });
@@ -101,20 +101,23 @@ namespace UsedGamesAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ClientId")
+                    b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SellerId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StockQuantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("SellerId");
+                    b.HasIndex("GameId");
 
                     b.ToTable("Order");
                 });
@@ -141,9 +144,6 @@ namespace UsedGamesAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -153,47 +153,77 @@ namespace UsedGamesAPI.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SellerContactId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ContactId");
+                    b.HasIndex("SellerContactId");
 
                     b.ToTable("Seller");
                 });
 
+            modelBuilder.Entity("UsedGamesAPI.Models.SellerContact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SellerContact");
+                });
+
             modelBuilder.Entity("UsedGamesAPI.Models.Client", b =>
                 {
-                    b.HasOne("UsedGamesAPI.Models.Contact", "Contact")
+                    b.HasOne("UsedGamesAPI.Models.ClientContact", "ClientContact")
                         .WithMany()
-                        .HasForeignKey("ContactId");
+                        .HasForeignKey("ClientContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UsedGamesAPI.Models.Game", b =>
                 {
-                    b.HasOne("UsedGamesAPI.Models.Order", null)
-                        .WithMany("Games")
-                        .HasForeignKey("OrderId");
-
                     b.HasOne("UsedGamesAPI.Models.Platform", "Platform")
                         .WithMany("Games")
-                        .HasForeignKey("PlatformId");
+                        .HasForeignKey("PlatformId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UsedGamesAPI.Models.Seller", "Seller")
+                        .WithMany("Games")
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UsedGamesAPI.Models.Order", b =>
                 {
                     b.HasOne("UsedGamesAPI.Models.Client", "Client")
                         .WithMany("Orders")
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("UsedGamesAPI.Models.Seller", "Seller")
-                        .WithMany("Orders")
-                        .HasForeignKey("SellerId");
+                    b.HasOne("UsedGamesAPI.Models.Game", "Game")
+                        .WithMany("Order")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UsedGamesAPI.Models.Seller", b =>
                 {
-                    b.HasOne("UsedGamesAPI.Models.Contact", "Contact")
+                    b.HasOne("UsedGamesAPI.Models.SellerContact", "SellerContact")
                         .WithMany()
-                        .HasForeignKey("ContactId");
+                        .HasForeignKey("SellerContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

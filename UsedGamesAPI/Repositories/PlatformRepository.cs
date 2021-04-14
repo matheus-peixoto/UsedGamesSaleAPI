@@ -17,6 +17,7 @@ namespace UsedGamesAPI.Repositories
         }
 
         public async Task<Platform> FindByIdAsync(int id) => await _dataContext.Platform.FindAsync(id);
+        public async Task<Platform> FindByIdWithGamesAsync(int id) => await _dataContext.Platform.Include(p => p.Games).FirstOrDefaultAsync(p => p.Id == id);
 
         public async Task<List<Platform>> FindAllAsync() => await _dataContext.Platform.ToListAsync();
 
@@ -40,6 +41,6 @@ namespace UsedGamesAPI.Repositories
             await _dataContext.SaveChangesAsync();
         }
 
-        public async Task<bool> Exists(int id) => await _dataContext.Platform.FindAsync(id) != null;
+        public async Task<bool> ExistsAsync(int id) => await _dataContext.Platform.FindAsync(id) != null;
     }
 }
