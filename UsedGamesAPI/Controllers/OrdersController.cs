@@ -50,7 +50,7 @@ namespace UsedGamesAPI.Controllers
         [Route("")]
         public async Task<ActionResult> Create([FromBody] CreateOrderDTO orderDTO)
         {
-            await ValidateOrderModel(orderDTO);
+            await ValidateOrderModelForeignKeys(orderDTO.ClientId, orderDTO.GameId);
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
             Order order = _mapper.Map<Order>(orderDTO);
@@ -59,13 +59,28 @@ namespace UsedGamesAPI.Controllers
             return CreatedAtRoute("GetOrderById", new { order.Id }, order);
         }
 
-        [NonAction]
-        private async Task ValidateOrderModel(CreateOrderDTO orderDTO)
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateOrderDTO orderDTO)
         {
-            if (!await _clientRepository.ExistsAsync(orderDTO.ClientId))
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+            Order order = await _orderRepository.FindByIdAsync(id);
+
+            if (order.IsNull()) return NotFound();
+
+            order = _mapper.Map(orderDTO, order);
+            await _orderRepository.UpdateAsync(order);
+
+            return NoContent();
+        }
+
+        [NonAction]
+        private async Task ValidateOrderModelForeignKeys(int clientId, int gameId)
+        {
+            if (!await _clientRepository.ExistsAsync(clientId))
                 ModelState.AddModelError("ClientId", "The given client's id does not corresponds to an existing client");
 
-            if (!await _gameRepository.ExistsAsync(orderDTO.GameId))
+            if (!await _gameRepository.ExistsAsync(gameId))
                 ModelState.AddModelError("GameId", "The given game's id does not corresponds to an existing game");
         }
     }
