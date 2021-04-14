@@ -9,7 +9,7 @@ namespace UsedGamesAPI.Models
         [Key]
         public int Id { get; set; }
         public OrderStatus Status { get; set; }
-        public int StockQuantity { get; set; }
+        public int Quantity { get; set; }
 
         public int GameId { get; set; }
         [ForeignKey("GameId")]
