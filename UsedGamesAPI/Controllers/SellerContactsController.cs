@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ExthensionMethods.Object;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,16 @@ namespace UsedGamesAPI.Controllers
         {
             List<SellerContact> sellerContacts = await _sellerContactRepository.FindAllAsync();
             return Ok(sellerContacts);
+        }
+
+        [HttpGet]
+        [Route("{id:int}", Name = "GetSellerContactById")]
+        public async Task<ActionResult<SellerContact>> GetById([FromRoute] int id)
+        {
+            SellerContact sellerContact = await _sellerContactRepository.FindByIdAsync(id);
+            if (sellerContact.IsNull()) return NotFound();
+
+            return Ok(sellerContact);
         }
     }
 }
