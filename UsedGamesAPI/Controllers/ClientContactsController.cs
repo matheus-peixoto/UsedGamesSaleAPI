@@ -88,6 +88,18 @@ namespace UsedGamesAPI.Controllers
             return NoContent();
         }
 
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            ClientContact clientContact = await _clientContactRepository.FindByIdAsync(id);
+            if (clientContact.IsNull()) return NotFound();
+
+            await _clientContactRepository.DeleteAsync(clientContact);
+
+            return NoContent();
+        }
+
         [NonAction]
         public async Task ValidateSellerContactModelForeignKeys(int clientId)
         {
