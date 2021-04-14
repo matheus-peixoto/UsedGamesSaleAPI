@@ -128,7 +128,7 @@ namespace UsedGamesAPI.Controllers
                 ModelState.AddModelError("PlatformId", "The given platform's id does not corresponds to an existing platform");
             }
 
-            if (patchGameDTO.Operations.Any(op => op.path.ToLower() == "sellerid") && !await _sellerRespository.ExistsAsync(gameDTO.PlatformId))
+            if (patchGameDTO.Operations.Any(op => op.path.ToLower() == "sellerid") && !await _sellerRespository.ExistsAsync(gameDTO.SellerId))
             {
                 ModelState.AddModelError("SellerId", "The given seller id does not correspond to an existing seller");
             }
