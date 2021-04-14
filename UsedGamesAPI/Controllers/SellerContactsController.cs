@@ -55,6 +55,22 @@ namespace UsedGamesAPI.Controllers
             return Ok();
         }
 
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateSellerContactDTO sellerContactDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            SellerContact sellerContact = await _sellerContactRepository.FindByIdAsync(id);
+            if (sellerContact.IsNull()) return NotFound();
+
+            _mapper.Map(sellerContactDTO, sellerContact);
+            await _sellerContactRepository.UpdateAsync(sellerContact);
+
+            return NoContent();
+        }
+
         [NonAction]
         public async Task ValidateSellerContactModelForeignKeys(int sellerId)
         {
