@@ -1,8 +1,10 @@
-﻿using ExthensionMethods.Object;
+﻿using AutoMapper;
+using ExthensionMethods.Object;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UsedGamesAPI.DTOs.SellerContacts;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories;
 using UsedGamesAPI.Repositories.Interfaces;
@@ -15,11 +17,13 @@ namespace UsedGamesAPI.Controllers
     {
         private readonly ISellerContactRepository _sellerContactRepository;
         private readonly ISellerRespository _sellerRespository;
+        private readonly IMapper _mapper;
 
-        public SellerContactsController(ISellerContactRepository sellerContactRepository, ISellerRespository sellerRespository)
+        public SellerContactsController(ISellerContactRepository sellerContactRepository, ISellerRespository sellerRespository, IMapper mapper)
         {
             _sellerContactRepository = sellerContactRepository;
             _sellerRespository = sellerRespository;
+            _mapper = mapper;
         }
 
         public async Task<ActionResult<List<SellerContact>>> Get()
@@ -40,11 +44,12 @@ namespace UsedGamesAPI.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult> Create([FromBody] SellerContact sellerContact)
+        public async Task<ActionResult> Create([FromBody] CreateSellerContactDTO sellerContactDTO)
         {
-            await ValidateSellerContactModelForeignKeys(sellerContact.SellerId);
+            await ValidateSellerContactModelForeignKeys(sellerContactDTO.SellerId);
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
+            SellerContact sellerContact = _mapper.Map<SellerContact>(sellerContactDTO);
             await _sellerContactRepository.CreateAsync(sellerContact);
 
             return Ok();
