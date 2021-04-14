@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExthensionMethods.Object;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,6 @@ namespace UsedGamesAPI.Controllers
             return Ok();
         }
 
-
         [HttpPut]
         [Route("{id:int}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateSellerContactDTO sellerContactDTO)
@@ -66,6 +66,23 @@ namespace UsedGamesAPI.Controllers
             if (sellerContact.IsNull()) return NotFound();
 
             _mapper.Map(sellerContactDTO, sellerContact);
+            await _sellerContactRepository.UpdateAsync(sellerContact);
+
+            return NoContent();
+        }
+
+        [HttpPatch]
+        [Route("{id:int}")]
+        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<UpdateSellerContactDTO> pacthSellerContactDTO)
+        {
+            SellerContact sellerContact = await _sellerContactRepository.FindByIdAsync(id);
+            if (sellerContact.IsNull()) return NotFound();
+
+            UpdateSellerContactDTO sellerDTO = _mapper.Map<UpdateSellerContactDTO>(sellerContact);
+            pacthSellerContactDTO.ApplyTo(sellerDTO);
+            if (!TryValidateModel(sellerDTO)) return ValidationProblem(ModelState);
+
+            _mapper.Map(sellerDTO, sellerContact);
             await _sellerContactRepository.UpdateAsync(sellerContact);
 
             return NoContent();
