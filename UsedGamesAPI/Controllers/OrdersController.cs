@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExthensionMethods.Object;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,23 @@ namespace UsedGamesAPI.Controllers
             if (order.IsNull()) return NotFound();
 
             order = _mapper.Map(orderDTO, order);
+            await _orderRepository.UpdateAsync(order);
+
+            return NoContent();
+        }
+
+        [HttpPatch]
+        [Route("{id:int}")]
+        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<UpdateOrderDTO> patchOrderDTO)
+        {
+            Order order = await _orderRepository.FindByIdAsync(id);
+            if (order.IsNull()) return NotFound();
+
+            UpdateOrderDTO orderDTO = _mapper.Map<UpdateOrderDTO>(order);
+            patchOrderDTO.ApplyTo(orderDTO);
+            if (!TryValidateModel(orderDTO)) return ValidationProblem(ModelState);
+
+            _mapper.Map(orderDTO, order);
             await _orderRepository.UpdateAsync(order);
 
             return NoContent();
