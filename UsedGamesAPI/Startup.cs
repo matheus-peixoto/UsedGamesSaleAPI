@@ -47,6 +47,7 @@ namespace UsedGamesAPI
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Environment.GetEnvironmentVariable("UsedGamesAPISQL_ConnectionString", EnvironmentVariableTarget.User)));
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IManagerRepository, ManagerRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ISellerRepository, SellerRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
