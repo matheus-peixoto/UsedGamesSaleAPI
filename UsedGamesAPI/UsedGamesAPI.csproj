@@ -16,6 +16,8 @@
     <Compile Remove="Migrations\20210414181429_AddQuantityFieldInGame.Designer.cs" />
     <Compile Remove="Migrations\20210414201452_AddingAssociationsWithContacts.cs" />
     <Compile Remove="Migrations\20210414201452_AddingAssociationsWithContacts.Designer.cs" />
+    <Compile Remove="Migrations\20210424001653_AddingManager.cs" />
+    <Compile Remove="Migrations\20210424001653_AddingManager.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

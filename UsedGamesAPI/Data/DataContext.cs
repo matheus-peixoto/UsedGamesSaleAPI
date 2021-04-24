@@ -5,6 +5,7 @@ namespace UsedGamesAPI.Data
 {
     public class DataContext : DbContext
     {
+        public DbSet<Manager> Manager { get; set; }
         public DbSet<Client> Client { get; set; }
         public DbSet<ClientContact> ClientContact { get; set; }
         public DbSet<Seller> Seller { get; set; }

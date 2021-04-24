@@ -4,12 +4,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using UsedGamesAPI.Models;
+using UsedGamesAPI.Models.Enums;
 
 namespace UsedGamesAPI.Services
 {
     public static class TokenService
     {
-        public static string GenerateToken(User user, string role = "client")
+        public static string GenerateToken(User user, AccountType accountType = AccountType.Client)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
@@ -17,7 +18,7 @@ namespace UsedGamesAPI.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Role, role)
+                    new Claim(ClaimTypes.Role, accountType.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(GetKey()), SecurityAlgorithms.HmacSha256Signature)
