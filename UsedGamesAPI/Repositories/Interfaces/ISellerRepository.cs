@@ -2,8 +2,7 @@
 
 namespace UsedGamesAPI.Repositories.Interfaces
 {
-    public interface ISellerRepository: ICrud<Seller>
+    public interface ISellerRepository: ICrud<Seller>, IUserRepository<Seller>
     {
-
     }
 }
