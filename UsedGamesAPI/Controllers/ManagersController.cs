@@ -104,5 +104,17 @@ namespace UsedGamesAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            Manager manager = await _managerRepository.FindByIdAsync(id);
+            if (manager.IsNull()) return NotFound();
+
+            await _managerRepository.DeleteAsync(manager);
+
+            return NoContent();
+        }
     }
 }
