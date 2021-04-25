@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ExthensionMethods.Object;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -80,6 +81,23 @@ namespace UsedGamesAPI.Controllers
 
             Manager manager = await _managerRepository.FindByIdAsync(id);
             if (manager.IsNull()) return NotFound();
+
+            _mapper.Map(managerDTO, manager);
+            await _managerRepository.UpdateAsync(manager);
+
+            return NoContent();
+        }
+
+        [HttpPatch]
+        [Route("{id:int}")]
+        public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<UpdateManagerDTO> pacthSellerDTO)
+        {
+            Manager manager = await _managerRepository.FindByIdAsync(id);
+            if (manager.IsNull()) return NotFound();
+
+            UpdateManagerDTO managerDTO = _mapper.Map<UpdateManagerDTO>(manager);
+            pacthSellerDTO.ApplyTo(managerDTO);
+            if (!TryValidateModel(managerDTO)) return ValidationProblem(ModelState);
 
             _mapper.Map(managerDTO, manager);
             await _managerRepository.UpdateAsync(manager);
