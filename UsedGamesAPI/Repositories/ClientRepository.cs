@@ -18,7 +18,7 @@ namespace UsedGamesAPI.Repositories
 
         public async Task<Client> FindByIdAsync(int id) => await _dataContext.Client.Include(c => c.ClientContact).FirstOrDefaultAsync(s => s.Id == id);
 
-        public async Task<Client> FindByAccount(string email, string password) => await _dataContext.Client.FirstOrDefaultAsync(c => c.Email == email && c.Password == password);
+        public async Task<Client> FindByAccountAsync(string email, string password) => await _dataContext.Client.FirstOrDefaultAsync(c => c.Email == email && c.Password == password);
 
         public async Task<Client> FindByIdWithOrdersAsync(int id) 
             => await _dataContext.Client.Include(c => c.ClientContact).Include(c => c.Orders).FirstOrDefaultAsync(c => c.Id == id);

@@ -18,7 +18,7 @@ namespace UsedGamesAPI.Repositories
 
         public async Task<Manager> FindByIdAsync(int id) => await _dataContext.Manager.FirstOrDefaultAsync(m => m.Id == id);
 
-        public async Task<Manager> FindByAccount(string email, string password) => await _dataContext.Manager.FirstOrDefaultAsync(m => m.Email == email && m.Password == password);
+        public async Task<Manager> FindByAccountAsync(string email, string password) => await _dataContext.Manager.FirstOrDefaultAsync(m => m.Email == email && m.Password == password);
 
         public async Task<List<Manager>> FindAllAsync() => await _dataContext.Manager.ToListAsync();
 

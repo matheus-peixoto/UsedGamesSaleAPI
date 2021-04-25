@@ -4,6 +4,6 @@ namespace UsedGamesAPI.Repositories.Interfaces
 {
     public interface IUserRepository<T>
     {
-        public Task<T> FindByAccount(string email, string password);
+        public Task<T> FindByAccountAsync(string email, string password);
     }
 }
