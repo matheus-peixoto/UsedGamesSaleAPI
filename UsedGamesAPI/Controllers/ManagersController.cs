@@ -71,5 +71,20 @@ namespace UsedGamesAPI.Controllers
 
             return CreatedAtRoute("GetManagerById", new { manager.Id }, manager);
         }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateManagerDTO managerDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            Manager manager = await _managerRepository.FindByIdAsync(id);
+            if (manager.IsNull()) return NotFound();
+
+            _mapper.Map(managerDTO, manager);
+            await _managerRepository.UpdateAsync(manager);
+
+            return NoContent();
+        }
     }
 }
