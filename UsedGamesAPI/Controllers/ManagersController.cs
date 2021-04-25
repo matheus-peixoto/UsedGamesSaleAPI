@@ -1,10 +1,12 @@
-﻿using ExthensionMethods.Object;
+﻿using AutoMapper;
+using ExthensionMethods.Object;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UsedGamesAPI.DTOs.Manager;
 using UsedGamesAPI.DTOs.Users;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Models.Enums;
@@ -19,10 +21,12 @@ namespace UsedGamesAPI.Controllers
     public class ManagersController : ControllerBase
     {
         private readonly IManagerRepository _managerRepository;
+        private readonly IMapper _mapper;
 
-        public ManagersController(IManagerRepository managerRepository)
+        public ManagersController(IManagerRepository managerRepository, IMapper mapper)
         {
             _managerRepository = managerRepository;
+            _mapper = mapper;
         }
 
         [AllowAnonymous]
@@ -54,6 +58,18 @@ namespace UsedGamesAPI.Controllers
             if (manager.IsNull()) return NotFound();
 
             return Ok(manager);
+        }
+
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult> Create([FromBody] CreateManagerDTO managerDTO)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            Manager manager = _mapper.Map<Manager>(managerDTO);
+            await _managerRepository.CreateAsync(manager);
+
+            return CreatedAtRoute("GetManagerById", new { manager.Id }, manager);
         }
     }
 }
