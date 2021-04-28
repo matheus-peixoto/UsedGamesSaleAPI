@@ -19,13 +19,13 @@ namespace UsedGamesAPI.Controllers
     [Route("sellers")]
     public class SellersController : ControllerBase
     {
-        private readonly ISellerRepository _sellerRespository;
+        private readonly ISellerRepository _sellerRepository;
         private readonly IGameRepository _gameRepository;
         private readonly IMapper _mapper;
 
         public SellersController(ISellerRepository sellerRespository, IGameRepository gameRepository, IMapper mapper)
         {
-            _sellerRespository = sellerRespository;
+            _sellerRepository = sellerRespository;
             _gameRepository = gameRepository;
             _mapper = mapper;
         }
@@ -35,7 +35,7 @@ namespace UsedGamesAPI.Controllers
         [Route("login")]
         public async Task<ActionResult> Authenticate(UserDTO userDTO)
         {
-            Seller seller = await _sellerRespository.FindByAccountAsync(userDTO.Email, userDTO.Password);
+            Seller seller = await _sellerRepository.FindByAccountAsync(userDTO.Email, userDTO.Password);
             if (seller.IsNull()) return NotFound(new { message = "Invalid user or password" });
 
             string token = TokenService.GenerateToken(seller, AccountType.Seller);
@@ -43,21 +43,12 @@ namespace UsedGamesAPI.Controllers
             return Ok(new { user = seller, token });
         }
 
-        [Authorize(Roles = "Seller,Manager")]
-        [HttpGet]
-        [Route("{id:int}/games", Name = "GetSellerGamesById")]
-        public async Task<ActionResult<List<Game>>> GetGames([FromRoute] int id)
-        {
-            List<Game> games = await _gameRepository.FindAllBySellerAsync(id);
-            return Ok(games);
-        }
-
         [Authorize(Roles = "Manager")]
         [HttpGet]
         [Route("")]
         public async Task<ActionResult<List<Seller>>> Get()
         {
-            List<Seller> sellers = await _sellerRespository.FindAllAsync();
+            List<Seller> sellers = await _sellerRepository.FindAllAsync();
             return Ok(sellers);
         }
 
@@ -66,10 +57,19 @@ namespace UsedGamesAPI.Controllers
         [Route("{id:int}", Name = "GetSellerById")]
         public async Task<ActionResult<Seller>> GetById([FromRoute] int id)
         {
-            Seller seller = await _sellerRespository.FindByIdAsync(id);
+            Seller seller = await _sellerRepository.FindByIdAsync(id);
             if (seller.IsNull()) return NotFound();
 
             return Ok(seller);
+        }
+
+        [Authorize(Roles = "Seller,Manager")]
+        [HttpGet]
+        [Route("{id:int}/games", Name = "GetSellerGamesById")]
+        public async Task<ActionResult<List<Game>>> GetGames([FromRoute] int id)
+        {
+            List<Game> games = await _gameRepository.FindAllBySellerAsync(id);
+            return Ok(new { games });
         }
 
         [HttpPost]
@@ -79,7 +79,7 @@ namespace UsedGamesAPI.Controllers
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
             Seller seller = _mapper.Map<Seller>(sellerDTO);
-            await _sellerRespository.CreateAsync(seller);
+            await _sellerRepository.CreateAsync(seller);
 
             return CreatedAtRoute("GetSellerById", new { seller.Id }, seller);
         }
@@ -91,11 +91,11 @@ namespace UsedGamesAPI.Controllers
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            Seller seller = await _sellerRespository.FindByIdAsync(id);
+            Seller seller = await _sellerRepository.FindByIdAsync(id);
             if (seller.IsNull()) return NotFound();
 
             _mapper.Map(sellerDTO, seller);
-            await _sellerRespository.UpdateAsync(seller);
+            await _sellerRepository.UpdateAsync(seller);
 
             return NoContent();
         }
@@ -105,7 +105,7 @@ namespace UsedGamesAPI.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<UpdateSellerDTO> pacthSellerDTO)
         {
-            Seller seller = await _sellerRespository.FindByIdAsync(id);
+            Seller seller = await _sellerRepository.FindByIdAsync(id);
             if (seller.IsNull()) return NotFound();
 
             UpdateSellerDTO sellerDTO = _mapper.Map<UpdateSellerDTO>(seller);
@@ -113,7 +113,7 @@ namespace UsedGamesAPI.Controllers
             if (!TryValidateModel(sellerDTO)) return ValidationProblem(ModelState);
 
             _mapper.Map(sellerDTO, seller);
-            await _sellerRespository.UpdateAsync(seller);
+            await _sellerRepository.UpdateAsync(seller);
 
             return NoContent();
         }
@@ -123,10 +123,10 @@ namespace UsedGamesAPI.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {
-            Seller seller = await _sellerRespository.FindByIdAsync(id);
+            Seller seller = await _sellerRepository.FindByIdAsync(id);
             if (seller.IsNull()) return NotFound();
 
-            await _sellerRespository.DeleteAsync(seller);
+            await _sellerRepository.DeleteAsync(seller);
 
             return NoContent();
         }

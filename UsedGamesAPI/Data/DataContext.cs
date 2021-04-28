@@ -11,6 +11,7 @@ namespace UsedGamesAPI.Data
         public DbSet<Seller> Seller { get; set; }
         public DbSet<SellerContact> SellerContact { get; set; }
         public DbSet<Order> Order { get; set; }
+        public DbSet<Image> Image { get; set; }
         public DbSet<Game> Game { get; set; }
         public DbSet<Platform> Platform { get; set; }
 

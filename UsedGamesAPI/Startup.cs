@@ -53,6 +53,7 @@ namespace UsedGamesAPI
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IPlatformRepository, PlatformRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<ISellerContactRepository, SellerContactRepository>();
             services.AddScoped<IClientContactRepository, ClientContactRepository>();
         }

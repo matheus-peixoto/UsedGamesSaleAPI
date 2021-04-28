@@ -15,7 +15,9 @@ namespace UsedGamesAPI.Models
         public string Details { get; set; }
         public int StockQuantity { get; set; }
 
-        public List<Order> Order { get; set; }
+        public List<Order> Orders { get; set; }
+
+        public List<Image> Images { get; set; }
 
         public int SellerId { get; set; }
         [ForeignKey("SellerId")]

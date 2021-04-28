@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExthensionMethods.Object;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -16,13 +17,15 @@ namespace UsedGamesAPI.Controllers
     public class GamesController : ControllerBase
     {
         private readonly IGameRepository _gameRepository;
+        private readonly IImageRepository _imageRepository;
         private readonly IPlatformRepository _platformRepository;
         private readonly ISellerRepository _sellerRespository;
         private readonly IMapper _mapper;
 
-        public GamesController(IGameRepository gameRepository, IPlatformRepository platformRepository, ISellerRepository sellerRespository, IMapper mapper)
+        public GamesController(IGameRepository gameRepository, IImageRepository imageRepository, IPlatformRepository platformRepository, ISellerRepository sellerRespository, IMapper mapper)
         {
             _gameRepository = gameRepository;
+            _imageRepository = imageRepository;
             _platformRepository = platformRepository;
             _sellerRespository = sellerRespository;
             _mapper = mapper;
@@ -46,6 +49,16 @@ namespace UsedGamesAPI.Controllers
             return Ok(game);
         }
 
+        [Authorize(Roles = "Manager,Seller")]
+        [HttpGet]
+        [Route("{id:int}/images", Name = "GetGameImagesById")]
+        public async Task<ActionResult<List<Image>>> GetImages([FromRoute] int id)
+        {
+            List<Image> images = await _imageRepository.FindAllByGameAsync(id);
+            return Ok(new { images });
+        }
+
+        [Authorize(Roles = "Seller")]
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Game>> Create([FromBody] CreateGameDTO gameDTO)
@@ -58,6 +71,7 @@ namespace UsedGamesAPI.Controllers
             return CreatedAtRoute("GetGameById", new { game.Id }, game);
         }
 
+        [Authorize(Roles = "Seller")]
         [HttpPut]
         [Route("{id:int}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateGameDTO gameDTO)
@@ -74,6 +88,7 @@ namespace UsedGamesAPI.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Seller")]
         [HttpPatch]
         [Route("{id:int}")]
         public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<UpdateGameDTO> patchGameDTO)
@@ -95,6 +110,7 @@ namespace UsedGamesAPI.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Seller")]
         [Route("{id:int}")]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {
@@ -107,7 +123,7 @@ namespace UsedGamesAPI.Controllers
         }
 
         [NonAction]
-        public async Task ValidateGameModelForeignKeys(int platformId, int sellerId)
+        private async Task ValidateGameModelForeignKeys(int platformId, int sellerId)
         {
             if (!await _platformRepository.ExistsAsync(platformId))
             {
@@ -121,7 +137,7 @@ namespace UsedGamesAPI.Controllers
         }
 
         [NonAction]
-        public async Task ValidateGameModelForeignKeysOnPatch(JsonPatchDocument<UpdateGameDTO> patchGameDTO, UpdateGameDTO gameDTO)
+        private async Task ValidateGameModelForeignKeysOnPatch(JsonPatchDocument<UpdateGameDTO> patchGameDTO, UpdateGameDTO gameDTO)
         {
             if (patchGameDTO.Operations.Any(op => op.path.ToLower() == "platformid") && !await _platformRepository.ExistsAsync(gameDTO.PlatformId))
             {
