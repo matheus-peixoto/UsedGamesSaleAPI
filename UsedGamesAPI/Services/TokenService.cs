@@ -18,6 +18,7 @@ namespace UsedGamesAPI.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Role, accountType.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),

@@ -22,6 +22,11 @@ namespace UsedGamesAPI.Repositories
 
         public async Task<List<Seller>> FindAllAsync() => await _dataContext.Seller.ToListAsync();
 
+        public Task<List<Game>> GetGames()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task CreateAsync(Seller obj)
         {
             _dataContext.Seller.Add(obj);

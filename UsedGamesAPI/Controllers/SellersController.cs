@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.Sellers;
 using UsedGamesAPI.DTOs.Users;
@@ -19,11 +20,13 @@ namespace UsedGamesAPI.Controllers
     public class SellersController : ControllerBase
     {
         private readonly ISellerRepository _sellerRespository;
+        private readonly IGameRepository _gameRepository;
         private readonly IMapper _mapper;
 
-        public SellersController(ISellerRepository sellerRespository, IMapper mapper)
+        public SellersController(ISellerRepository sellerRespository, IGameRepository gameRepository, IMapper mapper)
         {
             _sellerRespository = sellerRespository;
+            _gameRepository = gameRepository;
             _mapper = mapper;
         }
 
@@ -37,7 +40,16 @@ namespace UsedGamesAPI.Controllers
 
             string token = TokenService.GenerateToken(seller, AccountType.Seller);
             seller.Password = "";
-            return Ok(new { seller, token });
+            return Ok(new { user = seller, token });
+        }
+
+        [Authorize(Roles = "Seller,Manager")]
+        [HttpGet]
+        [Route("{id:int}/games", Name = "GetSellerGamesById")]
+        public async Task<ActionResult<List<Game>>> GetGames([FromRoute] int id)
+        {
+            List<Game> games = await _gameRepository.FindAllBySellerAsync(id);
+            return Ok(games);
         }
 
         [Authorize(Roles = "Manager")]

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UsedGamesAPI.Data;
 using UsedGamesAPI.Models;
@@ -19,6 +20,8 @@ namespace UsedGamesAPI.Repositories
         public async Task<Game> FindByIdAsync(int id) => await _dataContext.Game.Include(g => g.Platform).FirstOrDefaultAsync(g => g.Id == id);
 
         public async Task<List<Game>> FindAllAsync() => await _dataContext.Game.Include(g => g.Platform).ToListAsync();
+
+        public async Task<List<Game>> FindAllBySellerAsync(int sellerId) => await _dataContext.Game.Include(g => g.Platform).Where(g => g.SellerId == sellerId).ToListAsync();
 
         public async Task CreateAsync(Game obj)
         {

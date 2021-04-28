@@ -40,7 +40,7 @@ namespace UsedGamesAPI.Controllers
 
             string token = TokenService.GenerateToken(manager, AccountType.Manager);
             manager.Password = "";
-            return Ok(new { manager, token });
+            return Ok(new { user = manager, token });
         }
 
         [HttpGet]

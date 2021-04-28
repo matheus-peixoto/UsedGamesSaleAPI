@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace UsedGamesAPI.Models.Enums
+﻿namespace UsedGamesAPI.Models.Enums
 {
     public enum OrderStatus
     {

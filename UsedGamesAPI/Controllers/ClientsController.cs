@@ -36,7 +36,7 @@ namespace UsedGamesAPI.Controllers
 
             string token = TokenService.GenerateToken(client);
             client.Password = "";
-            return Ok(new { client, token });
+            return Ok(new { user = client, token });
         }
 
         [Authorize(Roles = "Manager")]
