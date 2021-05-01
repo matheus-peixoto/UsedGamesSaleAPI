@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.Order;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
+using UsedGamesAPI.Services.Filters;
 
 namespace UsedGamesAPI.Controllers
 {
@@ -49,9 +50,9 @@ namespace UsedGamesAPI.Controllers
 
         [HttpPost]
         [Route("")]
+        [ValidateOrderForeignKeysOnCreate]
         public async Task<ActionResult> Create([FromBody] CreateOrderDTO orderDTO)
         {
-            await ValidateOrderModelForeignKeys(orderDTO.ClientId, orderDTO.GameId);
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
             Order order = _mapper.Map<Order>(orderDTO);
