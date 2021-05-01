@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Models.Enums;
 
-namespace UsedGamesAPI.Services
+namespace UsedGamesAPI.Services.Token
 {
     public static class TokenService
     {

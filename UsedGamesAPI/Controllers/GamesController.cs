@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.Games;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
+using UsedGamesAPI.Services.Filters;
 
 namespace UsedGamesAPI.Controllers
 {
@@ -74,11 +75,10 @@ namespace UsedGamesAPI.Controllers
         [Authorize(Roles = "Seller")]
         [HttpPut]
         [Route("{id:int}")]
+        [ValidateGameForeignKeysOnUpdate]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateGameDTO gameDTO)
         {
-            await ValidateGameModelForeignKeys(gameDTO.PlatformId, gameDTO.SellerId);
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             Game game = await _gameRepository.FindByIdAsync(id);
             if (game.IsNull()) return NotFound();
 
@@ -120,20 +120,6 @@ namespace UsedGamesAPI.Controllers
             await _gameRepository.DeleteAsync(game);
 
             return NoContent();
-        }
-
-        [NonAction]
-        private async Task ValidateGameModelForeignKeys(int platformId, int sellerId)
-        {
-            if (!await _platformRepository.ExistsAsync(platformId))
-            {
-                ModelState.AddModelError("PlatformId", "The given platform id does not correspond to an existing Platform");
-            }
-
-            if (!await _sellerRespository.ExistsAsync(sellerId))
-            {
-                ModelState.AddModelError("SellerId", "The given seller id does not correspond to an existing seller");
-            }
         }
 
         [NonAction]

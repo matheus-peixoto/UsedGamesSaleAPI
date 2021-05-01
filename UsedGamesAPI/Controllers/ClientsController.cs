@@ -9,7 +9,7 @@ using UsedGamesAPI.DTOs.Clients;
 using UsedGamesAPI.DTOs.Users;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
-using UsedGamesAPI.Services;
+using UsedGamesAPI.Services.Token;
 
 namespace UsedGamesAPI.Controllers
 {

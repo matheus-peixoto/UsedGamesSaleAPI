@@ -11,7 +11,7 @@ using UsedGamesAPI.DTOs.Users;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Models.Enums;
 using UsedGamesAPI.Repositories.Interfaces;
-using UsedGamesAPI.Services;
+using UsedGamesAPI.Services.Token;
 
 namespace UsedGamesAPI.Controllers
 {

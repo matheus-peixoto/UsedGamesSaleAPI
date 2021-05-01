@@ -3,6 +3,7 @@
     public class CreateSellerContactDTO
     {
         public string PhoneNumber { get; set; }
+
         public int SellerId { get; set; }
     }
 }

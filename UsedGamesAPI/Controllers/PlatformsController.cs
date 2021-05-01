@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExthensionMethods.Object;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,10 +28,10 @@ namespace UsedGamesAPI.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<Platform>>> Get()
+        public async Task<ActionResult> Get()
         {
             List<Platform> platforms = await _platformRepository.FindAllWithGamesAsync();
-            return Ok(platforms);
+            return Ok(new { platforms });
         }
 
         [HttpGet]
@@ -43,6 +44,7 @@ namespace UsedGamesAPI.Controllers
             return Ok(platform);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [Route("")]
         public async Task<ActionResult> Create([FromBody] CreateUpdatePlatformDTO platformDTO)
@@ -55,6 +57,7 @@ namespace UsedGamesAPI.Controllers
             return CreatedAtRoute("GetPlatformById", new { platform.Id }, platform);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPut]
         [Route("{id:int}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] CreateUpdatePlatformDTO platformDTO)
@@ -70,6 +73,7 @@ namespace UsedGamesAPI.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPatch]
         [Route("{id:int}")]
         public async Task<ActionResult> UpdatePartial([FromRoute] int id, [FromBody] JsonPatchDocument<CreateUpdatePlatformDTO> patchPlatformDTO)
@@ -87,6 +91,7 @@ namespace UsedGamesAPI.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<ActionResult> Delete([FromRoute] int id)

@@ -10,7 +10,7 @@ using System;
 using UsedGamesAPI.Data;
 using UsedGamesAPI.Repositories;
 using UsedGamesAPI.Repositories.Interfaces;
-using UsedGamesAPI.Services;
+using UsedGamesAPI.Services.Token;
 
 namespace UsedGamesAPI
 {
