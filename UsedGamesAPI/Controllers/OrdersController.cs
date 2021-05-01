@@ -102,7 +102,7 @@ namespace UsedGamesAPI.Controllers
 
             await _orderRepository.DeleteAsync(order);
 
-            return NoContent();
+            return Ok(order);
         }
     }
 }

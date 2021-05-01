@@ -114,7 +114,7 @@ namespace UsedGamesAPI.Controllers
 
             await _managerRepository.DeleteAsync(manager);
 
-            return NoContent();
+            return Ok(manager);
         }
     }
 }

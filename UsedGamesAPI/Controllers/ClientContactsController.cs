@@ -98,7 +98,7 @@ namespace UsedGamesAPI.Controllers
 
             await _clientContactRepository.DeleteAsync(clientContact);
 
-            return NoContent();
+            return Ok(clientContact);
         }
     }
 }

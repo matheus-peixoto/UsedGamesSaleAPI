@@ -119,7 +119,7 @@ namespace UsedGamesAPI.Controllers
 
             await _gameRepository.DeleteAsync(game);
 
-            return NoContent();
+            return Ok(game);
         }
 
         [NonAction]

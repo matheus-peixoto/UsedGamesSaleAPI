@@ -128,7 +128,7 @@ namespace UsedGamesAPI.Controllers
 
             await _sellerRepository.DeleteAsync(seller);
 
-            return NoContent();
+            return Ok(seller);
         }
     }
 }

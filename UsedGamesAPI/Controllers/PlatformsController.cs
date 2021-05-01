@@ -101,7 +101,7 @@ namespace UsedGamesAPI.Controllers
 
             await _platformRepository.DeleteAsync(platform);
 
-            return NoContent();
+            return Ok(platform);
         }
     }
 }
