@@ -16,12 +16,12 @@ namespace UsedGamesAPI.Services.Filters
             ISellerRepository sellerRepository = (ISellerRepository)context.HttpContext.RequestServices.GetService(typeof(ISellerRepository));
             UpdateGameDTO gameDTO = (UpdateGameDTO)context.ActionArguments["gameDTO"];
 
-            if (!await platformRepository.ExistsAsync(gameDTO.PlatformId))
+            if (gameDTO.PlatformId == 0 || !await platformRepository.ExistsAsync(gameDTO.PlatformId))
             {
                 context.ModelState.AddModelError("PlatformId", "The given platform id does not correspond to an existing Platform");
             }
 
-            if (!await sellerRepository.ExistsAsync(gameDTO.SellerId))
+            if (gameDTO.SellerId == 0 || !await sellerRepository.ExistsAsync(gameDTO.SellerId))
             {
                 context.ModelState.AddModelError("SellerId", "The given seller id does not correspond to an existing seller");
             }

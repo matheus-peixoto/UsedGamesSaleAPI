@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Models.DTOs.Image;
 using UsedGamesAPI.Repositories.Interfaces;
+using UsedGamesAPI.Services.Filters;
 
 namespace UsedGamesAPI.Controllers
 {
@@ -60,9 +61,9 @@ namespace UsedGamesAPI.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [ValidateImageForeignKeysOnUpdate]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateImageDTO imageDTO)
         {
-            await ValidateImageModelForeignKeys(imageDTO.GameId);
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
             Image image = await _imageRepository.FindByIdAsync(id);
@@ -92,15 +93,6 @@ namespace UsedGamesAPI.Controllers
             await _imageRepository.UpdateAsync(image);
 
             return NoContent();
-        }
-
-        [NonAction]
-        private async Task ValidateImageModelForeignKeys(int gameId)
-        {
-            if (!await _gameRepository.ExistsAsync(gameId))
-            {
-                ModelState.AddModelError("GameId", "The given game id does not corresponds to an existing game");
-            }
         }
 
         [NonAction]
