@@ -63,7 +63,6 @@ namespace UsedGamesAPI.Controllers
         [Route("")]
         public async Task<ActionResult> Create([FromBody] CreateClientDTO clientDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
             Client client = _mapper.Map<Client>(clientDTO);
 
             await _clientRepository.CreateAsync(client);
@@ -76,8 +75,6 @@ namespace UsedGamesAPI.Controllers
         [Authorize(Roles = "Client")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateClientDTO clientDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             Client client = await _clientRepository.FindByIdAsync(id);
             if (client.IsNull()) return NotFound();
 

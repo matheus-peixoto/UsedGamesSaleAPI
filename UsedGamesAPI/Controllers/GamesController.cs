@@ -64,8 +64,6 @@ namespace UsedGamesAPI.Controllers
         [Route("")]
         public async Task<ActionResult<Game>> Create([FromBody] CreateGameDTO gameDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             Game game = _mapper.Map<Game>(gameDTO);
             await _gameRepository.CreateAsync(game);
 

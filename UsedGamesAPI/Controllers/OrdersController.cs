@@ -53,8 +53,6 @@ namespace UsedGamesAPI.Controllers
         [ValidateOrderForeignKeysOnCreate]
         public async Task<ActionResult> Create([FromBody] CreateOrderDTO orderDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             Order order = _mapper.Map<Order>(orderDTO);
             await _orderRepository.CreateAsync(order);
 
@@ -65,7 +63,6 @@ namespace UsedGamesAPI.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateOrderDTO orderDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
             Order order = await _orderRepository.FindByIdAsync(id);
 
             if (order.IsNull()) return NotFound();

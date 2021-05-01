@@ -51,8 +51,6 @@ namespace UsedGamesAPI.Controllers
         [Route("")]
         public async Task<ActionResult<Game>> Create([FromBody] CreateImageDTO imgaeDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             Image image = _mapper.Map<Image>(imgaeDTO);
             await _imageRepository.CreateAsync(image);
 
@@ -64,8 +62,6 @@ namespace UsedGamesAPI.Controllers
         [ValidateImageForeignKeysOnUpdate]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateImageDTO imageDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             Image image = await _imageRepository.FindByIdAsync(id);
             if (image.IsNull()) return NotFound();
 

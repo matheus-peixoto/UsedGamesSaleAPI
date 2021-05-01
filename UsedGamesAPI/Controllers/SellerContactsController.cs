@@ -16,7 +16,6 @@ namespace UsedGamesAPI.Controllers
     public class SellerContactsController : ControllerBase
     {
         private readonly ISellerContactRepository _sellerContactRepository;
-        private readonly ISellerRepository _sellerRepository;
         private readonly IMapper _mapper;
 
         public SellerContactsController(ISellerContactRepository sellerContactRepository, ISellerRepository sellerRespository, IMapper mapper)
@@ -47,8 +46,6 @@ namespace UsedGamesAPI.Controllers
         [ValidateSellerContactForeignKeysOnCreate]
         public async Task<ActionResult> Create([FromBody] CreateSellerContactDTO sellerContactDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             SellerContact sellerContact = _mapper.Map<SellerContact>(sellerContactDTO);
             await _sellerContactRepository.CreateAsync(sellerContact);
 
@@ -59,8 +56,6 @@ namespace UsedGamesAPI.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateSellerContactDTO sellerContactDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             SellerContact sellerContact = await _sellerContactRepository.FindByIdAsync(id);
             if (sellerContact.IsNull()) return NotFound();
 

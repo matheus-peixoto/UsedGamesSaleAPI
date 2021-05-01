@@ -16,7 +16,6 @@ namespace UsedGamesAPI.Controllers
     public class ClientContactsController : ControllerBase
     {
         private readonly IClientContactRepository _clientContactRepository;
-        private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
 
         public ClientContactsController(IClientContactRepository clientContactRepository, IClientRepository clientRepository, IMapper mapper)
@@ -49,8 +48,6 @@ namespace UsedGamesAPI.Controllers
         [ValidateClientContactForeignKeysOnCreate]
         public async Task<ActionResult> Create([FromBody] CreateClientContactDTO clientContactDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             ClientContact clientContact = _mapper.Map<ClientContact>(clientContactDTO);
             await _clientContactRepository.CreateAsync(clientContact);
 
@@ -61,8 +58,6 @@ namespace UsedGamesAPI.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateClientContactDTO clientContactDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             ClientContact clientContact = await _clientContactRepository.FindByIdAsync(id);
             if (clientContact.IsNull()) return NotFound();
 

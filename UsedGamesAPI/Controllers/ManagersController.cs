@@ -65,8 +65,6 @@ namespace UsedGamesAPI.Controllers
         [Route("")]
         public async Task<ActionResult> Create([FromBody] CreateManagerDTO managerDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             Manager manager = _mapper.Map<Manager>(managerDTO);
             await _managerRepository.CreateAsync(manager);
 
@@ -77,8 +75,6 @@ namespace UsedGamesAPI.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateManagerDTO managerDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             Manager manager = await _managerRepository.FindByIdAsync(id);
             if (manager.IsNull()) return NotFound();
 

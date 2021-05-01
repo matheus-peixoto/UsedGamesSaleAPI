@@ -76,8 +76,6 @@ namespace UsedGamesAPI.Controllers
         [Route("")]
         public async Task<ActionResult> Create([FromBody] CreateSellerDTO sellerDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             Seller seller = _mapper.Map<Seller>(sellerDTO);
             await _sellerRepository.CreateAsync(seller);
 
@@ -89,8 +87,6 @@ namespace UsedGamesAPI.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateSellerDTO sellerDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
             Seller seller = await _sellerRepository.FindByIdAsync(id);
             if (seller.IsNull()) return NotFound();
 
