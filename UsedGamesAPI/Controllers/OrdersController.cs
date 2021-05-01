@@ -104,15 +104,5 @@ namespace UsedGamesAPI.Controllers
 
             return NoContent();
         }
-
-        [NonAction]
-        private async Task ValidateOrderModelForeignKeys(int clientId, int gameId)
-        {
-            if (!await _clientRepository.ExistsAsync(clientId))
-                ModelState.AddModelError("ClientId", "The given client's id does not corresponds to an existing client");
-
-            if (!await _gameRepository.ExistsAsync(gameId))
-                ModelState.AddModelError("GameId", "The given game's id does not corresponds to an existing game");
-        }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.ClientContacts;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
+using UsedGamesAPI.Services.Filters;
 
 namespace UsedGamesAPI.Controllers
 {
@@ -45,9 +46,9 @@ namespace UsedGamesAPI.Controllers
 
         [HttpPost]
         [Route("")]
+        [ValidateClientContactForeignKeysOnCreate]
         public async Task<ActionResult> Create([FromBody] CreateClientContactDTO clientContactDTO)
         {
-            await ValidateSellerContactModelForeignKeys(clientContactDTO.ClientId);
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
             ClientContact clientContact = _mapper.Map<ClientContact>(clientContactDTO);
@@ -98,13 +99,6 @@ namespace UsedGamesAPI.Controllers
             await _clientContactRepository.DeleteAsync(clientContact);
 
             return NoContent();
-        }
-
-        [NonAction]
-        public async Task ValidateSellerContactModelForeignKeys(int clientId)
-        {
-            if (!await _clientRepository.ExistsAsync(clientId))
-                ModelState.AddModelError("ClientId", "The given client id does not corresponds to an existing client");
         }
     }
 }
