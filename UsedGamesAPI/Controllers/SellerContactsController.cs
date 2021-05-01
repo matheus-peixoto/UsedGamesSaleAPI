@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.SellerContacts;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
+using UsedGamesAPI.Services.Filters;
 
 namespace UsedGamesAPI.Controllers
 {
@@ -15,13 +16,13 @@ namespace UsedGamesAPI.Controllers
     public class SellerContactsController : ControllerBase
     {
         private readonly ISellerContactRepository _sellerContactRepository;
-        private readonly ISellerRepository _sellerRespository;
+        private readonly ISellerRepository _sellerRepository;
         private readonly IMapper _mapper;
 
         public SellerContactsController(ISellerContactRepository sellerContactRepository, ISellerRepository sellerRespository, IMapper mapper)
         {
             _sellerContactRepository = sellerContactRepository;
-            _sellerRespository = sellerRespository;
+            _sellerRepository = sellerRespository;
             _mapper = mapper;
         }
 
@@ -43,9 +44,9 @@ namespace UsedGamesAPI.Controllers
 
         [HttpPost]
         [Route("")]
+        [ValidateSellerContactForeignKeysOnCreate]
         public async Task<ActionResult> Create([FromBody] CreateSellerContactDTO sellerContactDTO)
         {
-            await ValidateSellerContactModelForeignKeys(sellerContactDTO.SellerId);
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
             SellerContact sellerContact = _mapper.Map<SellerContact>(sellerContactDTO);
@@ -96,13 +97,6 @@ namespace UsedGamesAPI.Controllers
             await _sellerContactRepository.DeleteAsync(sellerContact);
 
             return NoContent();
-        }
-
-        [NonAction]
-        public async Task ValidateSellerContactModelForeignKeys(int sellerId)
-        {
-            if (!await _sellerRespository.ExistsAsync(sellerId))
-                ModelState.AddModelError("SellerId", "The given seller id does not correspond to an existing seller");
         }
     }
 }

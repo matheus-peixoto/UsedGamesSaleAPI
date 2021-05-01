@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.Games;
 using UsedGamesAPI.Repositories.Interfaces;
@@ -25,7 +23,7 @@ namespace UsedGamesAPI.Services.Filters
             {
                 context.ModelState.AddModelError("SellerId", "The given seller id does not correspond to an existing seller");
             }
-            
+
             await next();
         }
     }
