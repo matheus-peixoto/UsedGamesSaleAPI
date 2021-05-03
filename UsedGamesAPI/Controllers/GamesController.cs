@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.Games;
 using UsedGamesAPI.Models;
+using UsedGamesAPI.Models.DTOs.Games;
 using UsedGamesAPI.Repositories.Interfaces;
 using UsedGamesAPI.Services.Filters;
 

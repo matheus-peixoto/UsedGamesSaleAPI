@@ -18,10 +18,9 @@ namespace UsedGamesAPI.Controllers
         private readonly IClientContactRepository _clientContactRepository;
         private readonly IMapper _mapper;
 
-        public ClientContactsController(IClientContactRepository clientContactRepository, IClientRepository clientRepository, IMapper mapper)
+        public ClientContactsController(IClientContactRepository clientContactRepository, IMapper mapper)
         {
             _clientContactRepository = clientContactRepository;
-            _clientRepository = clientRepository;
             _mapper = mapper;
         }
 

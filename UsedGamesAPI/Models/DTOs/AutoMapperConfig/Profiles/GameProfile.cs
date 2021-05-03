@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using UsedGamesAPI.DTOs.Games;
 using UsedGamesAPI.Models;
+using UsedGamesAPI.Models.DTOs.Games;
 
 namespace UsedGamesAPI.DTOs.AutoMapperConfig.Profiles
 {
@@ -9,6 +10,7 @@ namespace UsedGamesAPI.DTOs.AutoMapperConfig.Profiles
         public GameProfile()
         {
             CreateMap<CreateGameDTO, Game>();
+            CreateMap<ImageForCreateCreateGameDTO, Image>();
             CreateMap<UpdateGameDTO, Game>();
             CreateMap<Game, UpdateGameDTO>();
         }

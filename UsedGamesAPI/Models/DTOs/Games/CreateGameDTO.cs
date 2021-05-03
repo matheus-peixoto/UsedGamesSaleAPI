@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace UsedGamesAPI.DTOs.Games
+namespace UsedGamesAPI.Models.DTOs.Games
 {
     public class CreateGameDTO
     {
@@ -11,5 +12,6 @@ namespace UsedGamesAPI.DTOs.Games
         public int StockQuantity { get; set; }
         public int PlatformId { get; set; }
         public int SellerId { get; set; }
+        public List<ImageForCreateCreateGameDTO> Images { get; set; }
     }
 }
