@@ -1,5 +1,16 @@
-# UsedGamesAPI
-API Rest construída com Asp .Net Core WebAPI para servir dados ao e-commerce UsedGamesSale, https://github.com/matheus-peixoto/UsedGamesSale, Web Application também construída com Asp .Net Core.
+<h1 align="center">UsedGamesAPI</h1>
+<p align="center">API REST construída para uso de e-commerce, UsedGamesSales, https://github.com/matheus-peixoto/UsedGamesSale. 
+API construída com Asp .Net Core WebAPI tendo autenticação e autorização com Bearer e JWT.</p>
 
-## O que foi utilizado
-C#, Asp .Net Core, Bearer com JWT para autorização e autenticação, banco de dados SQL Server com ORM Entity Framework Core, padrão repository e padrão DTO com Auto Mapper.
+## Tecnologias utilizadas
+  * C# 
+  * Asp .Net Core
+  * Bearer e JWT para autorização e autenticação
+  * SQL Server 
+  * Entity Framework Core 
+  * AutoMapper
+
+### Padrões utilizados
+Padrão Unity of Work com ORM Entity Framework Core e padrão Repository para uso do banco de dados e padrão DTO para transferência de dados.
+
+<h4 align="center">🚧 Projeto em construção...<h4>
