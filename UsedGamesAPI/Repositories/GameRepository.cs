@@ -17,7 +17,7 @@ namespace UsedGamesAPI.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task<Game> FindByIdAsync(int id) => await _dataContext.Game.Include(g => g.Platform).FirstOrDefaultAsync(g => g.Id == id);
+        public async Task<Game> FindByIdAsync(int id) => await _dataContext.Game.Include(g => g.Platform).Include(g => g.Images).FirstOrDefaultAsync(g => g.Id == id);
 
         public async Task<List<Game>> FindAllAsync() => await _dataContext.Game.Include(g => g.Platform).ToListAsync();
 

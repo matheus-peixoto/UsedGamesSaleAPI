@@ -12,6 +12,6 @@ namespace UsedGamesAPI.Models.DTOs.Games
         public int StockQuantity { get; set; }
         public int PlatformId { get; set; }
         public int SellerId { get; set; }
-        public List<ImageForCreateCreateGameDTO> Images { get; set; }
+        public List<ImageForCreateGameDTO> Images { get; set; }
     }
 }

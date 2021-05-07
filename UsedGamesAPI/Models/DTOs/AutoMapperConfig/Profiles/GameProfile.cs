@@ -10,7 +10,7 @@ namespace UsedGamesAPI.DTOs.AutoMapperConfig.Profiles
         public GameProfile()
         {
             CreateMap<CreateGameDTO, Game>();
-            CreateMap<ImageForCreateCreateGameDTO, Image>();
+            CreateMap<ImageForCreateGameDTO, Image>();
             CreateMap<UpdateGameDTO, Game>();
             CreateMap<Game, UpdateGameDTO>();
         }

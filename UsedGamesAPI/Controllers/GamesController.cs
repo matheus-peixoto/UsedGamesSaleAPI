@@ -67,8 +67,19 @@ namespace UsedGamesAPI.Controllers
         {
             Game game = _mapper.Map<Game>(gameDTO);
             await _gameRepository.CreateAsync(game);
+            return CreatedAtAction(nameof(Create), new { game.Id }, game);
+        }
 
-            return CreatedAtRoute("GetGameById", new { game.Id }, game);
+        [Authorize(Roles = "Seller")]
+        [HttpPost]
+        [Route("{id:int}/images")]
+        public async Task<ActionResult<Game>> CreateImages([FromRoute] int id, [FromBody] CreateGameImagesDTO gameImgsDTO)
+        {
+            Game game = await _gameRepository.FindByIdAsync(id);
+            if (game is null) return NotFound();
+            game.Images = _mapper.Map<List<Image>>(gameImgsDTO.Images);
+            await _gameRepository.UpdateAsync(game);
+            return CreatedAtAction(nameof(Create), new { game.Id }, game);
         }
 
         [Authorize(Roles = "Seller")]
