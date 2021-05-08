@@ -88,13 +88,24 @@ namespace UsedGamesAPI.Controllers
         [ValidateGameForeignKeysOnUpdate]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateGameDTO gameDTO)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
             Game game = await _gameRepository.FindByIdAsync(id);
             if (game.IsNull()) return NotFound();
 
             _mapper.Map(gameDTO, game);
             await _gameRepository.UpdateAsync(game);
 
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Seller")]
+        [HttpPut]
+        [Route("{id:int}/images/{imgid:int}")]
+        public async Task<ActionResult<Game>> UpdateImage([FromRoute] int id, [FromRoute] int imgid, [FromBody] ImageForGameDTO imgDTO)
+        {
+            Image img = await _gameRepository.FindGameImageAsync(id, imgid);
+            if (img is null) return BadRequest();
+            _mapper.Map(imgDTO, img);
+            await _imageRepository.UpdateAsync(img);
             return NoContent();
         }
 

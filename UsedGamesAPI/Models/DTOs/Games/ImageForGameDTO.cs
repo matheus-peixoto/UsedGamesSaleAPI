@@ -1,6 +1,6 @@
 ﻿namespace UsedGamesAPI.Models.DTOs.Games
 {
-    public class ImageForCreateGameDTO
+    public class ImageForGameDTO
     {
         public string Path { get; set; }
     }

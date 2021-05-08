@@ -23,6 +23,14 @@ namespace UsedGamesAPI.Repositories
 
         public async Task<List<Game>> FindAllBySellerAsync(int sellerId) => await _dataContext.Game.Include(g => g.Platform).Where(g => g.SellerId == sellerId).ToListAsync();
 
+        public async Task<Image> FindGameImageAsync(int gameId, int imgId)
+        {
+            Game game = await _dataContext.Game.Include(g => g.Images).FirstOrDefaultAsync(g => g.Id == gameId);
+            if (game is null) return null;
+            Image img = game.Images.FirstOrDefault(i => i.Id == imgId);
+            return img;
+        }
+
         public async Task CreateAsync(Game obj)
         {
             _dataContext.Game.Add(obj);

@@ -8,7 +8,7 @@ namespace UsedGamesAPI.DTOs.Sellers
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public List<ImageForCreateGameDTO> Images { get; set; }
+        public List<ImageForGameDTO> Images { get; set; }
         public ContactForCreateSellerDTO SellerContact { get; set; }
     }
 }

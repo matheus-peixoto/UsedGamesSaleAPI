@@ -4,6 +4,6 @@ namespace UsedGamesAPI.Models.DTOs.Games
 {
     public class CreateGameImagesDTO
     {
-        public List<ImageForCreateGameDTO> Images { get; set; }
+        public List<ImageForGameDTO> Images { get; set; }
     }
 }
