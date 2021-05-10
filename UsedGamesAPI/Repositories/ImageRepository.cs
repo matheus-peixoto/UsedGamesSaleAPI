@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using UsedGamesAPI.Data;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
+using UsedGamesAPI.Services.ExthensionsMethods;
+using UsedGamesAPI.Services.Paging;
 
 namespace UsedGamesAPI.Repositories
 {
@@ -20,7 +22,7 @@ namespace UsedGamesAPI.Repositories
 
         public async Task<Image> FindByIdAsync(int id) => await _dataContext.Image.FirstOrDefaultAsync(g => g.Id == id);
 
-        public async Task<List<Image>> FindAllAsync() => await _dataContext.Image.ToListAsync();
+        public async Task<PagedList<Image>> FindAllAsync() => (await _dataContext.Image.ToListAsync()).ToPagedList();
 
         public async Task<List<Image>> FindAllByGameAsync(int gameId) => await _dataContext.Image.Where(i => i.GameId == gameId).ToListAsync();
 

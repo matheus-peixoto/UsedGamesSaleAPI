@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UsedGamesAPI.Models.DTOs.Image;
 using UsedGamesAPI.Repositories.Interfaces;
 
-namespace UsedGamesAPI.Services.Filters
+namespace UsedGamesAPI.Services.Filters.ImageFilters
 {
     public class ValidateImageForeignKeysOnUpdateAttribute : Attribute, IAsyncActionFilter
     {

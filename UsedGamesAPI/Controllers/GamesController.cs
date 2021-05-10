@@ -11,6 +11,8 @@ using UsedGamesAPI.Models;
 using UsedGamesAPI.Models.DTOs.Games;
 using UsedGamesAPI.Repositories.Interfaces;
 using UsedGamesAPI.Services.Filters;
+using UsedGamesAPI.Services.Filters.GameFilters;
+using UsedGamesAPI.Services.Paging;
 
 namespace UsedGamesAPI.Controllers
 {
@@ -35,9 +37,9 @@ namespace UsedGamesAPI.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<Game>>> Get()
+        public async Task<ActionResult<List<Game>>> Get([FromQuery] QueryParameters parameters)
         {
-            List<Game> games = await _gameRepository.FindAllAsync();
+            PagedList<Game> games = await _gameRepository.FindAllWithQueryAsync(parameters);
             return Ok(games);
         }
 
@@ -57,7 +59,7 @@ namespace UsedGamesAPI.Controllers
         public async Task<ActionResult<List<Image>>> GetImages([FromRoute] int id)
         {
             List<Image> images = await _imageRepository.FindAllByGameAsync(id);
-            return Ok(new { images });
+            return Ok(images);
         }
 
         [Authorize(Roles = "Seller")]
@@ -106,6 +108,7 @@ namespace UsedGamesAPI.Controllers
             if (img is null) return BadRequest();
             _mapper.Map(imgDTO, img);
             await _imageRepository.UpdateAsync(img);
+
             return NoContent();
         }
 
@@ -137,9 +140,7 @@ namespace UsedGamesAPI.Controllers
         {
             Game game = await _gameRepository.FindByIdAsync(id);
             if (game.IsNull()) return NotFound();
-
             await _gameRepository.DeleteAsync(game);
-
             return Ok(game);
         }
 
@@ -149,11 +150,6 @@ namespace UsedGamesAPI.Controllers
             if (patchGameDTO.Operations.Any(op => op.path.ToLower() == "platformid") && !await _platformRepository.ExistsAsync(gameDTO.PlatformId))
             {
                 ModelState.AddModelError("PlatformId", "The given platform's id does not corresponds to an existing platform");
-            }
-
-            if (patchGameDTO.Operations.Any(op => op.path.ToLower() == "sellerid") && !await _sellerRespository.ExistsAsync(gameDTO.SellerId))
-            {
-                ModelState.AddModelError("SellerId", "The given seller id does not correspond to an existing seller");
             }
         }
     }

@@ -10,6 +10,7 @@ using UsedGamesAPI.Models;
 using UsedGamesAPI.Models.DTOs.Image;
 using UsedGamesAPI.Repositories.Interfaces;
 using UsedGamesAPI.Services.Filters;
+using UsedGamesAPI.Services.Filters.ImageFilters;
 
 namespace UsedGamesAPI.Controllers
 {

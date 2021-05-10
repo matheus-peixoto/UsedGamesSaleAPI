@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.SellerContacts;
 using UsedGamesAPI.Repositories.Interfaces;
 
-namespace UsedGamesAPI.Services.Filters
+namespace UsedGamesAPI.Services.Filters.SellerFilters
 {
     public class ValidateSellerContactForeignKeysOnCreateAttribute : Attribute, IAsyncActionFilter
     {

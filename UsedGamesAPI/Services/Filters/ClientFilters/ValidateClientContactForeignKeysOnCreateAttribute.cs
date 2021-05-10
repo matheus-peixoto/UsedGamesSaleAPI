@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.ClientContacts;
 using UsedGamesAPI.Repositories.Interfaces;
 
-namespace UsedGamesAPI.Services.Filters
+namespace UsedGamesAPI.Services.Filters.ClientFilters
 {
     public class ValidateClientContactForeignKeysOnCreateAttribute : Attribute, IAsyncActionFilter
     {

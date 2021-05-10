@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using UsedGamesAPI.Data;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
+using UsedGamesAPI.Services.ExthensionsMethods;
+using UsedGamesAPI.Services.Paging;
 
 namespace UsedGamesAPI.Repositories
 {
@@ -20,7 +22,7 @@ namespace UsedGamesAPI.Repositories
 
         public async Task<Seller> FindByAccountAsync(string email, string password) => await _dataContext.Seller.FirstOrDefaultAsync(s => s.Email == email && s.Password == password);
 
-        public async Task<List<Seller>> FindAllAsync() => await _dataContext.Seller.ToListAsync();
+        public async Task<PagedList<Seller>> FindAllAsync() => (await _dataContext.Seller.ToListAsync()).ToPagedList();
 
         public Task<List<Game>> GetGames()
         {

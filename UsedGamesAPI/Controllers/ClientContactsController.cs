@@ -8,6 +8,7 @@ using UsedGamesAPI.DTOs.ClientContacts;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
 using UsedGamesAPI.Services.Filters;
+using UsedGamesAPI.Services.Filters.ClientFilters;
 
 namespace UsedGamesAPI.Controllers
 {

@@ -2,14 +2,12 @@
 using ExthensionMethods.Object;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.Order;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
-using UsedGamesAPI.Services.Filters;
+using UsedGamesAPI.Services.Filters.OrderFilters;
 
 namespace UsedGamesAPI.Controllers
 {

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UsedGamesAPI.DTOs.Order;
 using UsedGamesAPI.Repositories.Interfaces;
 
-namespace UsedGamesAPI.Services.Filters
+namespace UsedGamesAPI.Services.Filters.OrderFilters
 {
     public class ValidateOrderForeignKeysOnCreateAttribute : Attribute, IAsyncActionFilter
     {

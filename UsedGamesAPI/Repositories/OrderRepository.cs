@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using UsedGamesAPI.Data;
 using UsedGamesAPI.Models;
 using UsedGamesAPI.Repositories.Interfaces;
+using UsedGamesAPI.Services.ExthensionsMethods;
+using UsedGamesAPI.Services.Paging;
 
 namespace UsedGamesAPI.Repositories
 {
@@ -18,7 +20,7 @@ namespace UsedGamesAPI.Repositories
 
         public async Task<Order> FindByIdAsync(int id) => await _dataContext.Order.Include(o => o.Client).FirstOrDefaultAsync(o => o.Id == id);
 
-        public async Task<List<Order>> FindAllAsync() => await _dataContext.Order.Include(o => o.Client).ToListAsync();
+        public async Task<PagedList<Order>> FindAllAsync() => (await _dataContext.Order.Include(o => o.Client).ToListAsync()).ToPagedList();
 
         public async Task CreateAsync(Order obj)
         {
