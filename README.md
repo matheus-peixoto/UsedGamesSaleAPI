@@ -3,7 +3,7 @@
 API construída com Asp .Net Core WebAPI tendo autenticação e autorização com Bearer e JWT.</p>
 
 ## Objetivo do projeto
-Construção de uma Web API, API REST, para um negócio de jogos usados, UsedGamesSale (https://github.com/matheus-peixoto/UsedGamesSale), fornecendo dados e funcionalidades sobre seus clientes, vendedores, jogos e compras.
+<p align="center">Construção de uma Web API, API REST, para um negócio de jogos usados, UsedGamesSale (https://github.com/matheus-peixoto/UsedGamesSale), fornecendo dados e funcionalidades sobre seus clientes, vendedores, jogos e compras.</p>
 
 ## Tecnologias utilizadas
   * C# 
